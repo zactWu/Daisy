@@ -37,12 +37,13 @@ CREATE TABLE administrator(
 
 CREATE TABLE project(
     project_id          VARCHAR(10),
-    administrator_id    VARCHAR(10)  NOT NULL,
+    administrator_id    VARCHAR(10) NOT NULL,
     name                VARCHAR(20) NOT NULL,
-    introdection        VARCHAR(100),
+    introduction        VARCHAR(100),
     participants_number NUMERIC(2, 0) CHECK (participants_number > 0) DEFAULT 1,
     start_time          VARCHAR(20),
     end_time            VARCHAR(20),
+    host                VARCHAR(20),
     PRIMARY KEY (project_id),
     FOREIGN KEY (administrator_id) REFERENCES administrator(administrator_id)
 );
@@ -101,7 +102,6 @@ CREATE TABLE comment(
 CREATE TABLE reply(
     reply_id               VARCHAR(10),
     comment_id             VARCHAR(10),
-    moment_id              VARCHAR(10),
     account                VARCHAR(20) NOT NULL,
     time                   VARCHAR(20),
     content                VARCHAR(200),
@@ -151,7 +151,7 @@ CREATE TABLE notification(
     project_id              VARCHAR(10) NOT NULL,
     time                    VARCHAR(20),
     content                 VARCHAR(200),
-    administrator_id        VARCHAR(10) NOT NULL,
+    administrator_id        VARCHAR(10) ,
     title                   VARCHAR(20) NOT NULL,
     PRIMARY KEY (notifi_id, project_id), 
     FOREIGN KEY (project_id) REFERENCES project(project_id)
