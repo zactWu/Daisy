@@ -37,12 +37,13 @@ CREATE TABLE administrator(
 
 CREATE TABLE project(
     project_id          VARCHAR(10),
-    administrator_id    VARCHAR(10)  NOT NULL,
+    administrator_id    VARCHAR(10) NOT NULL,
     name                VARCHAR(20) NOT NULL,
-    introdection        VARCHAR(100),
+    introduction        VARCHAR(100),
     participants_number NUMERIC(2, 0) CHECK (participants_number > 0) DEFAULT 1,
     start_time          VARCHAR(20),
     end_time            VARCHAR(20),
+    host                VARCHAR(20),
     PRIMARY KEY (project_id),
     FOREIGN KEY (administrator_id) REFERENCES administrator(administrator_id)
 );
@@ -101,14 +102,11 @@ CREATE TABLE comment(
 CREATE TABLE reply(
     reply_id               VARCHAR(10),
     comment_id             VARCHAR(10),
-    moment_id              VARCHAR(10),
     account                VARCHAR(20) NOT NULL,
     time                   VARCHAR(20),
     content                VARCHAR(200),
     PRIMARY KEY (reply_id), 
     FOREIGN KEY (account) REFERENCES users(account),
-    FOREIGN KEY (moment_id) REFERENCES moment(moment_id)
-          ON DELETE CASCADE,
     FOREIGN KEY (comment_id) REFERENCES comment(comment_id)
           ON DELETE CASCADE
 );
@@ -151,7 +149,7 @@ CREATE TABLE notification(
     project_id              VARCHAR(10) NOT NULL,
     time                    VARCHAR(20),
     content                 VARCHAR(200),
-    administrator_id        VARCHAR(10) NOT NULL,
+    administrator_id        VARCHAR(10) ,
     title                   VARCHAR(20) NOT NULL,
     PRIMARY KEY (notifi_id, project_id), 
     FOREIGN KEY (project_id) REFERENCES project(project_id)
@@ -191,7 +189,7 @@ CREATE TABLE post(
     max_member_num            NUMERIC(2, 0) CHECK(max_member_num > 0),
     cur_member_num            NUMERIC(2, 0) CHECK(cur_member_num > 0),
     PRIMARY KEY (post_id, project_id, group_id),
-    FOREIGN KEY (project_id, group_id) REFERENCES usergroups(project_id, group_id)
+    FOREIGN KEY (group_id, project_id) REFERENCES usergroups(group_id, project_id)
         ON DELETE CASCADE
 );
 
@@ -220,7 +218,7 @@ CREATE TABLE user_notifi(
     account                    VARCHAR(20) NOT NULL,
     read_tag                   NUMERIC(1, 0) CHECK (read_tag IN(0, 1)),
     PRIMARY KEY (project_id, notifi_id, account),
-    FOREIGN KEY (project_id, notifi_id) REFERENCES notification(project_id, notifi_id)
+    FOREIGN KEY (notifi_id, project_id) REFERENCES notification(notifi_id, project_id)
         ON DELETE CASCADE,
     FOREIGN KEY (account) REFERENCES users(account)
 );
@@ -261,7 +259,7 @@ CREATE TABLE application(
     status                    VARCHAR(20) CHECK (status in ('successful', 'failed', 'Unprocessed')),
     content                   VARCHAR(200),
     PRIMARY KEY (project_id, group_id, account),
-    FOREIGN KEY (project_id, group_id) REFERENCES usergroups(project_id, group_id)
+    FOREIGN KEY (group_id, project_id) REFERENCES usergroups(group_id, project_id)
         ON DELETE CASCADE,
     FOREIGN KEY (account) REFERENCES users(account)
 );
@@ -271,7 +269,7 @@ CREATE TABLE member(
     group_id                  VARCHAR(10) NOT NULL,
     account                   VARCHAR(20) NOT NULL,
     PRIMARY KEY (project_id, group_id, account),
-    FOREIGN KEY (project_id, group_id) REFERENCES usergroups(project_id, group_id)
+    FOREIGN KEY (group_id, project_id) REFERENCES usergroups(group_id, project_id)
         ON DELETE CASCADE,
     FOREIGN KEY (account) REFERENCES users(account)
 );
@@ -283,7 +281,7 @@ CREATE TABLE post_star(
     account                   VARCHAR(20) NOT NULL,
     name                      VARCHAR(20) NOT NULL,
     PRIMARY KEY (project_id, group_id, account, post_id, name),
-    FOREIGN KEY (project_id, group_id, post_id) REFERENCES post(project_id, group_id, post_id)
+    FOREIGN KEY (post_id, project_id, group_id) REFERENCES post(post_id, project_id, group_id)
         ON DELETE CASCADE,
     FOREIGN KEY (account, name) REFERENCES favourite_package(account, name)
         ON DELETE CASCADE
@@ -347,7 +345,7 @@ CREATE TABLE report_disc(
     PRIMARY KEY (report_id,project_id, discussion_id),
     FOREIGN KEY (report_id)     REFERENCES report(report_id)
           ON DELETE CASCADE,
-    FOREIGN KEY (project_id, discussion_id) 
-        REFERENCES discussion(project_id, discussion_id)
+    FOREIGN KEY (discussion_id, project_id) 
+        REFERENCES discussion(discussion_id, project_id)
         ON DELETE CASCADE
 );
