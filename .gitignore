@@ -44,3 +44,5 @@ build/
 .builds
 *.pidb
 *.scc
+
+**/appsettings.json
