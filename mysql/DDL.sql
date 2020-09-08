@@ -349,3 +349,26 @@ CREATE TABLE report_disc(
         REFERENCES discussion(discussion_id, project_id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE group_message(
+    group_message_id            VARCHAR(10) NOT NULL,   
+    group_id                    VARCHAR(10),
+    project_id                  VARCHAR(10) NOT NULL,
+    content                     VARCHAR(100) NOT NULL,
+    time                        VARCHAR(20),
+    PRIMARY KEY (group_message_id),
+    FOREIGN KEY (group_id, project_id)     REFERENCES usergroups(group_id, project_id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE user_group_message(
+    group_message_id            VARCHAR(10) NOT NULL,
+    account                     VARCHAR(20) NOT NULL, 
+    PRIMARY KEY (group_message_id, account),
+    FOREIGN KEY (group_message_id)     
+        REFERENCES group_message(group_message_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (account) 
+        REFERENCES users(account)
+        ON DELETE CASCADE
+);

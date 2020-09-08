@@ -21,6 +21,7 @@ namespace DaisyDBProject.Models
         public virtual DbSet<Discussion> Discussion { get; set; }
         public virtual DbSet<FavouritePackage> FavouritePackage { get; set; }
         public virtual DbSet<Follow> Follow { get; set; }
+        public virtual DbSet<GroupMessage> GroupMessage { get; set; }
         public virtual DbSet<LeaveMessage> LeaveMessage { get; set; }
         public virtual DbSet<LiftBan> LiftBan { get; set; }
         public virtual DbSet<LikeDisc> LikeDisc { get; set; }
@@ -42,6 +43,7 @@ namespace DaisyDBProject.Models
         public virtual DbSet<ReportMom> ReportMom { get; set; }
         public virtual DbSet<ReportReply> ReportReply { get; set; }
         public virtual DbSet<Subscribe> Subscribe { get; set; }
+        public virtual DbSet<UserGroupMessage> UserGroupMessage { get; set; }
         public virtual DbSet<UserNotice> UserNotice { get; set; }
         public virtual DbSet<UserNotifi> UserNotifi { get; set; }
         public virtual DbSet<Usergroups> Usergroups { get; set; }
@@ -336,6 +338,52 @@ namespace DaisyDBProject.Models
                     .HasForeignKey(d => d.FollowedAccount)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("follow_ibfk_1");
+            });
+
+            modelBuilder.Entity<GroupMessage>(entity =>
+            {
+                entity.ToTable("group_message");
+
+                entity.HasIndex(e => new { e.GroupId, e.ProjectId })
+                    .HasName("group_id");
+
+                entity.Property(e => e.GroupMessageId)
+                    .HasColumnName("group_message_id")
+                    .HasColumnType("varchar(10)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+
+                entity.Property(e => e.Content)
+                    .IsRequired()
+                    .HasColumnName("content")
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+
+                entity.Property(e => e.GroupId)
+                    .HasColumnName("group_id")
+                    .HasColumnType("varchar(10)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+
+                entity.Property(e => e.ProjectId)
+                    .IsRequired()
+                    .HasColumnName("project_id")
+                    .HasColumnType("varchar(10)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+
+                entity.Property(e => e.Time)
+                    .HasColumnName("time")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+
+                entity.HasOne(d => d.Usergroups)
+                    .WithMany(p => p.GroupMessage)
+                    .HasForeignKey(d => new { d.GroupId, d.ProjectId })
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("group_message_ibfk_1");
             });
 
             modelBuilder.Entity<LeaveMessage>(entity =>
@@ -1263,6 +1311,39 @@ namespace DaisyDBProject.Models
                     .WithMany(p => p.Subscribe)
                     .HasForeignKey(d => d.ProjectId)
                     .HasConstraintName("subscribe_ibfk_1");
+            });
+
+            modelBuilder.Entity<UserGroupMessage>(entity =>
+            {
+                entity.HasKey(e => new { e.GroupMessageId, e.Account })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("user_group_message");
+
+                entity.HasIndex(e => e.Account)
+                    .HasName("account");
+
+                entity.Property(e => e.GroupMessageId)
+                    .HasColumnName("group_message_id")
+                    .HasColumnType("varchar(10)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+
+                entity.Property(e => e.Account)
+                    .HasColumnName("account")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+
+                entity.HasOne(d => d.AccountNavigation)
+                    .WithMany(p => p.UserGroupMessage)
+                    .HasForeignKey(d => d.Account)
+                    .HasConstraintName("user_group_message_ibfk_2");
+
+                entity.HasOne(d => d.GroupMessage)
+                    .WithMany(p => p.UserGroupMessage)
+                    .HasForeignKey(d => d.GroupMessageId)
+                    .HasConstraintName("user_group_message_ibfk_1");
             });
 
             modelBuilder.Entity<UserNotice>(entity =>

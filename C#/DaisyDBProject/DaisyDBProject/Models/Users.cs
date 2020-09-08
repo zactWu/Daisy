@@ -24,6 +24,7 @@ namespace DaisyDBProject.Models
             Reply = new HashSet<Reply>();
             Report = new HashSet<Report>();
             Subscribe = new HashSet<Subscribe>();
+            UserGroupMessage = new HashSet<UserGroupMessage>();
             UserNotice = new HashSet<UserNotice>();
             UserNotifi = new HashSet<UserNotifi>();
             Usergroups = new HashSet<Usergroups>();
@@ -67,6 +68,7 @@ namespace DaisyDBProject.Models
         public virtual ICollection<Reply> Reply { get; set; }
         public virtual ICollection<Report> Report { get; set; }
         public virtual ICollection<Subscribe> Subscribe { get; set; }
+        public virtual ICollection<UserGroupMessage> UserGroupMessage { get; set; }
         public virtual ICollection<UserNotice> UserNotice { get; set; }
         public virtual ICollection<UserNotifi> UserNotifi { get; set; }
         public virtual ICollection<Usergroups> Usergroups { get; set; }
