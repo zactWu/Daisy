@@ -37,7 +37,6 @@ CREATE TABLE administrator(
 
 CREATE TABLE project(
     project_id          VARCHAR(10),
-    administrator_id    VARCHAR(10) NOT NULL,
     name                VARCHAR(20) NOT NULL,
     introduction        VARCHAR(100),
     participants_number NUMERIC(2, 0) CHECK (participants_number > 0) DEFAULT 1,
@@ -45,7 +44,6 @@ CREATE TABLE project(
     end_time            VARCHAR(20),
     host                VARCHAR(20),
     PRIMARY KEY (project_id),
-    FOREIGN KEY (administrator_id) REFERENCES administrator(administrator_id)
 );
 
 CREATE TABLE usergroups(
@@ -149,12 +147,10 @@ CREATE TABLE notification(
     project_id              VARCHAR(10) NOT NULL,
     time                    VARCHAR(20),
     content                 VARCHAR(200),
-    administrator_id        VARCHAR(10) ,
     title                   VARCHAR(20) NOT NULL,
     PRIMARY KEY (notifi_id, project_id), 
     FOREIGN KEY (project_id) REFERENCES project(project_id)
           ON DELETE CASCADE,
-    FOREIGN KEY (administrator_id) REFERENCES administrator(administrator_id)
 );
 
 CREATE TABLE lift_ban(

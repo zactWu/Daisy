@@ -14,7 +14,6 @@ namespace DaisyDBProject.Models
         }
 
         public string ProjectId { get; set; }
-        public string AdministratorId { get; set; }
         public string Name { get; set; }
         public string Introduction { get; set; }
         public decimal? ParticipantsNumber { get; set; }
@@ -22,7 +21,6 @@ namespace DaisyDBProject.Models
         public string EndTime { get; set; }
         public string Host { get; set; }
 
-        public virtual Administrator Administrator { get; set; }
         public virtual ICollection<Discussion> Discussion { get; set; }
         public virtual ICollection<Notification> Notification { get; set; }
         public virtual ICollection<Subscribe> Subscribe { get; set; }

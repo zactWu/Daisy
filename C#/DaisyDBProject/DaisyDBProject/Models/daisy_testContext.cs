@@ -776,9 +776,6 @@ namespace DaisyDBProject.Models
 
                 entity.ToTable("notification");
 
-                entity.HasIndex(e => e.AdministratorId)
-                    .HasName("administrator_id");
-
                 entity.HasIndex(e => e.ProjectId)
                     .HasName("project_id");
 
@@ -790,12 +787,6 @@ namespace DaisyDBProject.Models
 
                 entity.Property(e => e.ProjectId)
                     .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
-
-                entity.Property(e => e.AdministratorId)
-                    .HasColumnName("administrator_id")
                     .HasColumnType("varchar(10)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
@@ -818,11 +809,6 @@ namespace DaisyDBProject.Models
                     .HasColumnType("varchar(20)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
-
-                entity.HasOne(d => d.Administrator)
-                    .WithMany(p => p.Notification)
-                    .HasForeignKey(d => d.AdministratorId)
-                    .HasConstraintName("notification_ibfk_2");
 
                 entity.HasOne(d => d.Project)
                     .WithMany(p => p.Notification)
@@ -943,18 +929,8 @@ namespace DaisyDBProject.Models
             {
                 entity.ToTable("project");
 
-                entity.HasIndex(e => e.AdministratorId)
-                    .HasName("administrator_id");
-
                 entity.Property(e => e.ProjectId)
                     .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
-
-                entity.Property(e => e.AdministratorId)
-                    .IsRequired()
-                    .HasColumnName("administrator_id")
                     .HasColumnType("varchar(10)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
@@ -994,12 +970,6 @@ namespace DaisyDBProject.Models
                     .HasColumnType("varchar(20)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
-
-                entity.HasOne(d => d.Administrator)
-                    .WithMany(p => p.Project)
-                    .HasForeignKey(d => d.AdministratorId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("project_ibfk_1");
             });
 
             modelBuilder.Entity<Reply>(entity =>
