@@ -43,7 +43,7 @@ CREATE TABLE project(
     start_time          VARCHAR(20),
     end_time            VARCHAR(20),
     host                VARCHAR(20),
-    PRIMARY KEY (project_id),
+    PRIMARY KEY (project_id)
 );
 
 CREATE TABLE usergroups(
@@ -71,6 +71,7 @@ CREATE TABLE favourite_package(
     name                VARCHAR(20) NOT NULL,
     create_time         VARCHAR(20),
     privacy             VARCHAR(7) CHECK (privacy IN ('public', 'private')),
+    type                VARCHAR(6) CHECK (type IN ('post', 'moment')),
     PRIMARY KEY (account, name),
     FOREIGN KEY (account) REFERENCES users(account)
 );
@@ -80,7 +81,7 @@ CREATE TABLE moment(
     account             VARCHAR(20) NOT NULL,
     title               VARCHAR(20) NOT NULL,
     time                VARCHAR(20),
-    content_url         VARCHAR(30) NOT NULL,            
+    content             VARCHAR(30) NOT NULL,            
     PRIMARY KEY (moment_id), 
     FOREIGN KEY (account) REFERENCES users(account)
 );
@@ -150,7 +151,7 @@ CREATE TABLE notification(
     title                   VARCHAR(20) NOT NULL,
     PRIMARY KEY (notifi_id, project_id), 
     FOREIGN KEY (project_id) REFERENCES project(project_id)
-          ON DELETE CASCADE,
+          ON DELETE CASCADE
 );
 
 CREATE TABLE lift_ban(

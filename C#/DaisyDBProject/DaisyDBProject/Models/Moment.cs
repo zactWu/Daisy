@@ -17,7 +17,7 @@ namespace DaisyDBProject.Models
         public string Account { get; set; }
         public string Title { get; set; }
         public string Time { get; set; }
-        public string ContentUrl { get; set; }
+        public string Content { get; set; }
 
         public virtual Users AccountNavigation { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }

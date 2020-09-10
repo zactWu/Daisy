@@ -298,6 +298,12 @@ namespace DaisyDBProject.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
 
+                entity.Property(e => e.Type)
+                    .HasColumnName("type")
+                    .HasColumnType("varchar(6)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+
                 entity.HasOne(d => d.AccountNavigation)
                     .WithMany(p => p.FavouritePackage)
                     .HasForeignKey(d => d.Account)
@@ -673,9 +679,9 @@ namespace DaisyDBProject.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
 
-                entity.Property(e => e.ContentUrl)
+                entity.Property(e => e.Content)
                     .IsRequired()
-                    .HasColumnName("content_url")
+                    .HasColumnName("content")
                     .HasColumnType("varchar(30)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
