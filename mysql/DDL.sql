@@ -9,19 +9,10 @@ CREATE TABLE users(
         CHECK (sex IN ('male', 'female')),
     school         VARCHAR(50),
     college        VARCHAR(20),
-    grade          VARCHAR(5)
-        CHECK (grade IN ('one', 'two', 'three', 'four', 'five')),
+    grade          INTEGER,
     student_number VARCHAR(10),
-    qq             VARCHAR(15),
-    wechat         VARCHAR(20),
-    weibo          VARCHAR(20),
     icon_url       VARCHAR(30),
     intro          VARCHAR(100),
-    signature      VARCHAR(50),
-    status         VARCHAR(6) NOT NULL
-        CHECK (status IN ('normal', 'banned')),
-    start_time     VARCHAR(20),
-    length         NUMERIC(3, 0) CHECK (length > 0),
     PRIMARY KEY  (account)
 );
 
@@ -39,7 +30,7 @@ CREATE TABLE project(
     project_id          VARCHAR(10),
     name                VARCHAR(20) NOT NULL,
     introduction        VARCHAR(100),
-    participants_number NUMERIC(2, 0) CHECK (participants_number > 0) DEFAULT 1,
+    participants_number INTEGER CHECK (participants_number > 0) DEFAULT 1,
     start_time          VARCHAR(20),
     end_time            VARCHAR(20),
     host                VARCHAR(20),
@@ -114,7 +105,7 @@ CREATE TABLE message(
     message_id              VARCHAR(10),
     send_account            VARCHAR(20) NOT NULL,
     receive_account         VARCHAR(20) NOT NULL,
-    read_tag                NUMERIC(1, 0) CHECK (read_tag IN(0, 1)),
+    read_tag                INTEGER CHECK (read_tag IN(0, 1)),
     time                    VARCHAR(20),
     content                 VARCHAR(200),
     PRIMARY KEY (message_id), 
@@ -138,7 +129,7 @@ CREATE TABLE leave_message(
     account                 VARCHAR(20) NOT NULL,
     time                    VARCHAR(20),
     content                 VARCHAR(200),
-    read_tag                NUMERIC(1, 0) CHECK (read_tag IN(0, 1)),
+    read_tag                INTEGER CHECK (read_tag IN(0, 1)),
     PRIMARY KEY (leave_message_id), 
     FOREIGN KEY (account) REFERENCES users(account)
 );
@@ -183,8 +174,8 @@ CREATE TABLE post(
     group_id                  VARCHAR(10) NOT NULL,
     post_time                 VARCHAR(20),
     content                   VARCHAR(200) NOT NULL,
-    max_member_num            NUMERIC(2, 0) CHECK(max_member_num > 0),
-    cur_member_num            NUMERIC(2, 0) CHECK(cur_member_num > 0),
+    max_member_num            INTEGER CHECK(max_member_num > 0),
+    cur_member_num            INTEGER CHECK(cur_member_num > 0),
     PRIMARY KEY (post_id, project_id, group_id),
     FOREIGN KEY (group_id, project_id) REFERENCES usergroups(group_id, project_id)
         ON DELETE CASCADE
@@ -193,7 +184,7 @@ CREATE TABLE post(
 CREATE TABLE user_notice(
     notice_id                  VARCHAR(10),
     account                    VARCHAR(20) NOT NULL,
-    read_tag                   NUMERIC(1, 0) CHECK (read_tag IN (0, 1)),
+    read_tag                   INTEGER CHECK (read_tag IN (0, 1)),
     PRIMARY KEY (notice_id, account),
     FOREIGN KEY (notice_id) REFERENCES notice(notice_id)
         ON DELETE CASCADE,
@@ -213,7 +204,7 @@ CREATE TABLE user_notifi(
     project_id                 VARCHAR(10) NOT NULL,
     notifi_id                  VARCHAR(10) NOT NULL,
     account                    VARCHAR(20) NOT NULL,
-    read_tag                   NUMERIC(1, 0) CHECK (read_tag IN(0, 1)),
+    read_tag                   INTEGER CHECK (read_tag IN(0, 1)),
     PRIMARY KEY (project_id, notifi_id, account),
     FOREIGN KEY (notifi_id, project_id) REFERENCES notification(notifi_id, project_id)
         ON DELETE CASCADE,

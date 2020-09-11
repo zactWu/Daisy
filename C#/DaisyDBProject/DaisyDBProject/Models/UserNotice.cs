@@ -7,7 +7,7 @@ namespace DaisyDBProject.Models
     {
         public string NoticeId { get; set; }
         public string Account { get; set; }
-        public decimal? ReadTag { get; set; }
+        public int? ReadTag { get; set; }
 
         public virtual Users AccountNavigation { get; set; }
         public virtual Notice Notice { get; set; }

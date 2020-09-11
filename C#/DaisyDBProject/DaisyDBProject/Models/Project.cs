@@ -16,7 +16,7 @@ namespace DaisyDBProject.Models
         public string ProjectId { get; set; }
         public string Name { get; set; }
         public string Introduction { get; set; }
-        public decimal? ParticipantsNumber { get; set; }
+        public int? ParticipantsNumber { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
         public string Host { get; set; }
