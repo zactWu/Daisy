@@ -8,7 +8,7 @@ namespace DaisyDBProject.Models
         public string MessageId { get; set; }
         public string SendAccount { get; set; }
         public string ReceiveAccount { get; set; }
-        public decimal? ReadTag { get; set; }
+        public int? ReadTag { get; set; }
         public string Time { get; set; }
         public string Content { get; set; }
 

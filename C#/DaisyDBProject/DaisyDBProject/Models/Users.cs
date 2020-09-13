@@ -24,6 +24,7 @@ namespace DaisyDBProject.Models
             Reply = new HashSet<Reply>();
             Report = new HashSet<Report>();
             Subscribe = new HashSet<Subscribe>();
+            UserGroupMessage = new HashSet<UserGroupMessage>();
             UserNotice = new HashSet<UserNotice>();
             UserNotifi = new HashSet<UserNotifi>();
             Usergroups = new HashSet<Usergroups>();
@@ -38,17 +39,10 @@ namespace DaisyDBProject.Models
         public string Sex { get; set; }
         public string School { get; set; }
         public string College { get; set; }
-        public string Grade { get; set; }
+        public int? Grade { get; set; }
         public string StudentNumber { get; set; }
-        public string Qq { get; set; }
-        public string Wechat { get; set; }
-        public string Weibo { get; set; }
         public string IconUrl { get; set; }
         public string Intro { get; set; }
-        public string Signature { get; set; }
-        public string Status { get; set; }
-        public string StartTime { get; set; }
-        public decimal? Length { get; set; }
 
         public virtual ICollection<Application> Application { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }
@@ -67,6 +61,7 @@ namespace DaisyDBProject.Models
         public virtual ICollection<Reply> Reply { get; set; }
         public virtual ICollection<Report> Report { get; set; }
         public virtual ICollection<Subscribe> Subscribe { get; set; }
+        public virtual ICollection<UserGroupMessage> UserGroupMessage { get; set; }
         public virtual ICollection<UserNotice> UserNotice { get; set; }
         public virtual ICollection<UserNotifi> UserNotifi { get; set; }
         public virtual ICollection<Usergroups> Usergroups { get; set; }

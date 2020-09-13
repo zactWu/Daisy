@@ -15,6 +15,7 @@ namespace DaisyDBProject.Models
         public string Name { get; set; }
         public string CreateTime { get; set; }
         public string Privacy { get; set; }
+        public string Type { get; set; }
 
         public virtual Users AccountNavigation { get; set; }
         public virtual ICollection<MomentStar> MomentStar { get; set; }

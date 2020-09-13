@@ -3,13 +3,12 @@ using System.Collections.Generic;
 
 namespace DaisyDBProject.Models
 {
-    public partial class UserNotice
+    public partial class UserGroupMessage
     {
-        public string NoticeId { get; set; }
+        public string GroupMessageId { get; set; }
         public string Account { get; set; }
-        public int? ReadTag { get; set; }
 
         public virtual Users AccountNavigation { get; set; }
-        public virtual Notice Notice { get; set; }
+        public virtual GroupMessage GroupMessage { get; set; }
     }
 }

@@ -15,8 +15,8 @@ namespace DaisyDBProject.Models
         public string GroupId { get; set; }
         public string PostTime { get; set; }
         public string Content { get; set; }
-        public decimal? MaxMemberNum { get; set; }
-        public decimal? CurMemberNum { get; set; }
+        public int? MaxMemberNum { get; set; }
+        public int? CurMemberNum { get; set; }
 
         public virtual Usergroups Usergroups { get; set; }
         public virtual ICollection<PostStar> PostStar { get; set; }
