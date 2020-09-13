@@ -5,7 +5,7 @@ namespace DaisyDBProject.Models
 {
     public partial class LikeMoment
     {
-        public string MomentId { get; set; }
+        public int MomentId { get; set; }
         public string Account { get; set; }
 
         public virtual Users AccountNavigation { get; set; }

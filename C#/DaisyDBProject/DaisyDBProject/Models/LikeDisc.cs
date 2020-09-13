@@ -5,8 +5,8 @@ namespace DaisyDBProject.Models
 {
     public partial class LikeDisc
     {
-        public string DiscussionId { get; set; }
-        public string ProjectId { get; set; }
+        public int DiscussionId { get; set; }
+        public int ProjectId { get; set; }
         public string Account { get; set; }
 
         public virtual Users AccountNavigation { get; set; }

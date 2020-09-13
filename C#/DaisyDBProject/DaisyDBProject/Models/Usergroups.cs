@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DaisyDBProject.Models
 {
@@ -13,8 +14,9 @@ namespace DaisyDBProject.Models
             Post = new HashSet<Post>();
         }
 
-        public string GroupId { get; set; }
-        public string ProjectId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int GroupId { get; set; }
+        public int ProjectId { get; set; }
         public string LeaderAccount { get; set; }
         public string Name { get; set; }
         public string Introduction { get; set; }

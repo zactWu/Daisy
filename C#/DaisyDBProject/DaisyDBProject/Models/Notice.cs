@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DaisyDBProject.Models
 {
@@ -10,7 +11,8 @@ namespace DaisyDBProject.Models
             UserNotice = new HashSet<UserNotice>();
         }
 
-        public string NoticeId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int NoticeId { get; set; }
         public string Title { get; set; }
         public string Time { get; set; }
         public string Content { get; set; }

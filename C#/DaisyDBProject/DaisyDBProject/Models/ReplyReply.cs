@@ -5,8 +5,8 @@ namespace DaisyDBProject.Models
 {
     public partial class ReplyReply
     {
-        public string IdToReply { get; set; }
-        public string IdReplied { get; set; }
+        public int IdToReply { get; set; }
+        public int IdReplied { get; set; }
 
         public virtual Reply IdRepliedNavigation { get; set; }
         public virtual Reply IdToReplyNavigation { get; set; }

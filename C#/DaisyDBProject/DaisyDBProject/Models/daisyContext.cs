@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DaisyDBProject.Models
 {
-    public partial class daisyContext : DbContext
+    public partial class DaisyContext : DbContext
     {
-        public daisyContext()
+        public DaisyContext()
         {
         }
 
-        public daisyContext(DbContextOptions<daisyContext> options)
+        public DaisyContext(DbContextOptions<DaisyContext> options)
             : base(options)
         {
         }
@@ -49,17 +49,14 @@ namespace DaisyDBProject.Models
         public virtual DbSet<Usergroups> Usergroups { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Administrator>(entity =>
             {
                 entity.ToTable("administrator");
 
-                entity.Property(e => e.AdministratorId)
-                    .HasColumnName("administrator_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.AdministratorId).HasColumnName("administrator_id");
 
                 entity.Property(e => e.EmailAddress)
                     .HasColumnName("email_address")
@@ -108,17 +105,9 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => new { e.GroupId, e.ProjectId })
                     .HasName("group_id");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
-                entity.Property(e => e.GroupId)
-                    .HasColumnName("group_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.GroupId).HasColumnName("group_id");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
@@ -160,11 +149,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.MomentId)
                     .HasName("moment_id");
 
-                entity.Property(e => e.CommentId)
-                    .HasColumnName("comment_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.CommentId).HasColumnName("comment_id");
 
                 entity.Property(e => e.Account)
                     .IsRequired()
@@ -179,11 +164,7 @@ namespace DaisyDBProject.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
 
-                entity.Property(e => e.MomentId)
-                    .HasColumnName("moment_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.MomentId).HasColumnName("moment_id");
 
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
@@ -217,17 +198,9 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.ProjectId)
                     .HasName("project_id");
 
-                entity.Property(e => e.DiscussionId)
-                    .HasColumnName("discussion_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.DiscussionId).HasColumnName("discussion_id");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
                 entity.Property(e => e.Account)
                     .IsRequired()
@@ -353,11 +326,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => new { e.GroupId, e.ProjectId })
                     .HasName("group_id");
 
-                entity.Property(e => e.GroupMessageId)
-                    .HasColumnName("group_message_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.GroupMessageId).HasColumnName("group_message_id");
 
                 entity.Property(e => e.Content)
                     .IsRequired()
@@ -366,18 +335,9 @@ namespace DaisyDBProject.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
 
-                entity.Property(e => e.GroupId)
-                    .HasColumnName("group_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.GroupId).HasColumnName("group_id");
 
-                entity.Property(e => e.ProjectId)
-                    .IsRequired()
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
@@ -399,11 +359,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.Account)
                     .HasName("account");
 
-                entity.Property(e => e.LeaveMessageId)
-                    .HasColumnName("leave_message_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.LeaveMessageId).HasColumnName("leave_message_id");
 
                 entity.Property(e => e.Account)
                     .IsRequired()
@@ -440,11 +396,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.Account)
                     .HasName("account");
 
-                entity.Property(e => e.LiftBanId)
-                    .HasColumnName("lift_ban_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.LiftBanId).HasColumnName("lift_ban_id");
 
                 entity.Property(e => e.Account)
                     .IsRequired()
@@ -491,11 +443,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => new { e.DiscussionId, e.ProjectId })
                     .HasName("discussion_id");
 
-                entity.Property(e => e.DiscussionId)
-                    .HasColumnName("discussion_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.DiscussionId).HasColumnName("discussion_id");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
@@ -503,11 +451,7 @@ namespace DaisyDBProject.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
                 entity.HasOne(d => d.AccountNavigation)
                     .WithMany(p => p.LikeDisc)
@@ -531,11 +475,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.Account)
                     .HasName("account");
 
-                entity.Property(e => e.MomentId)
-                    .HasColumnName("moment_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.MomentId).HasColumnName("moment_id");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
@@ -568,17 +508,9 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => new { e.GroupId, e.ProjectId })
                     .HasName("group_id");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
-                entity.Property(e => e.GroupId)
-                    .HasColumnName("group_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.GroupId).HasColumnName("group_id");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
@@ -608,11 +540,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.SendAccount)
                     .HasName("send_account");
 
-                entity.Property(e => e.MessageId)
-                    .HasColumnName("message_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.MessageId).HasColumnName("message_id");
 
                 entity.Property(e => e.Content)
                     .HasColumnName("content")
@@ -662,11 +590,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.Account)
                     .HasName("account");
 
-                entity.Property(e => e.MomentId)
-                    .HasColumnName("moment_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.MomentId).HasColumnName("moment_id");
 
                 entity.Property(e => e.Account)
                     .IsRequired()
@@ -712,11 +636,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => new { e.Account, e.Name })
                     .HasName("account");
 
-                entity.Property(e => e.MomentId)
-                    .HasColumnName("moment_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.MomentId).HasColumnName("moment_id");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
@@ -745,11 +665,7 @@ namespace DaisyDBProject.Models
             {
                 entity.ToTable("notice");
 
-                entity.Property(e => e.NoticeId)
-                    .HasColumnName("notice_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.NoticeId).HasColumnName("notice_id");
 
                 entity.Property(e => e.Content)
                     .HasColumnName("content")
@@ -781,17 +697,9 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.ProjectId)
                     .HasName("project_id");
 
-                entity.Property(e => e.NotifiId)
-                    .HasColumnName("notifi_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.NotifiId).HasColumnName("notifi_id");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
                 entity.Property(e => e.Content)
                     .HasColumnName("content")
@@ -828,23 +736,11 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => new { e.GroupId, e.ProjectId })
                     .HasName("group_id");
 
-                entity.Property(e => e.PostId)
-                    .HasColumnName("post_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.PostId).HasColumnName("post_id");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
-                entity.Property(e => e.GroupId)
-                    .HasColumnName("group_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.GroupId).HasColumnName("group_id");
 
                 entity.Property(e => e.Content)
                     .IsRequired()
@@ -882,17 +778,9 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => new { e.PostId, e.ProjectId, e.GroupId })
                     .HasName("post_id");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
-                entity.Property(e => e.GroupId)
-                    .HasColumnName("group_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.GroupId).HasColumnName("group_id");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
@@ -900,11 +788,7 @@ namespace DaisyDBProject.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
 
-                entity.Property(e => e.PostId)
-                    .HasColumnName("post_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.PostId).HasColumnName("post_id");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
@@ -927,11 +811,7 @@ namespace DaisyDBProject.Models
             {
                 entity.ToTable("project");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
                 entity.Property(e => e.EndTime)
                     .HasColumnName("end_time")
@@ -979,11 +859,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.CommentId)
                     .HasName("comment_id");
 
-                entity.Property(e => e.ReplyId)
-                    .HasColumnName("reply_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ReplyId).HasColumnName("reply_id");
 
                 entity.Property(e => e.Account)
                     .IsRequired()
@@ -992,11 +868,7 @@ namespace DaisyDBProject.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
 
-                entity.Property(e => e.CommentId)
-                    .HasColumnName("comment_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.CommentId).HasColumnName("comment_id");
 
                 entity.Property(e => e.Content)
                     .HasColumnName("content")
@@ -1033,17 +905,9 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.IdReplied)
                     .HasName("id_replied");
 
-                entity.Property(e => e.IdToReply)
-                    .HasColumnName("id_to_reply")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.IdToReply).HasColumnName("id_to_reply");
 
-                entity.Property(e => e.IdReplied)
-                    .HasColumnName("id_replied")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.IdReplied).HasColumnName("id_replied");
 
                 entity.HasOne(d => d.IdRepliedNavigation)
                     .WithMany(p => p.ReplyReplyIdRepliedNavigation)
@@ -1063,11 +927,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.Account)
                     .HasName("account");
 
-                entity.Property(e => e.ReportId)
-                    .HasColumnName("report_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ReportId).HasColumnName("report_id");
 
                 entity.Property(e => e.Account)
                     .IsRequired()
@@ -1118,17 +978,9 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.CommentId)
                     .HasName("comment_id");
 
-                entity.Property(e => e.ReportId)
-                    .HasColumnName("report_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ReportId).HasColumnName("report_id");
 
-                entity.Property(e => e.CommentId)
-                    .HasColumnName("comment_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.CommentId).HasColumnName("comment_id");
 
                 entity.HasOne(d => d.Comment)
                     .WithMany(p => p.ReportCom)
@@ -1151,23 +1003,11 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => new { e.DiscussionId, e.ProjectId })
                     .HasName("discussion_id");
 
-                entity.Property(e => e.ReportId)
-                    .HasColumnName("report_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ReportId).HasColumnName("report_id");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
-                entity.Property(e => e.DiscussionId)
-                    .HasColumnName("discussion_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.DiscussionId).HasColumnName("discussion_id");
 
                 entity.HasOne(d => d.Report)
                     .WithMany(p => p.ReportDisc)
@@ -1190,17 +1030,9 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.MomentId)
                     .HasName("moment_id");
 
-                entity.Property(e => e.ReportId)
-                    .HasColumnName("report_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ReportId).HasColumnName("report_id");
 
-                entity.Property(e => e.MomentId)
-                    .HasColumnName("moment_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.MomentId).HasColumnName("moment_id");
 
                 entity.HasOne(d => d.Moment)
                     .WithMany(p => p.ReportMom)
@@ -1223,17 +1055,9 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.ReplyId)
                     .HasName("reply_id");
 
-                entity.Property(e => e.ReportId)
-                    .HasColumnName("report_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ReportId).HasColumnName("report_id");
 
-                entity.Property(e => e.ReplyId)
-                    .HasColumnName("reply_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ReplyId).HasColumnName("reply_id");
 
                 entity.HasOne(d => d.Reply)
                     .WithMany(p => p.ReportReply)
@@ -1256,11 +1080,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.Account)
                     .HasName("account");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
@@ -1290,11 +1110,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.Account)
                     .HasName("account");
 
-                entity.Property(e => e.GroupMessageId)
-                    .HasColumnName("group_message_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.GroupMessageId).HasColumnName("group_message_id");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
@@ -1323,11 +1139,7 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.Account)
                     .HasName("account");
 
-                entity.Property(e => e.NoticeId)
-                    .HasColumnName("notice_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.NoticeId).HasColumnName("notice_id");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
@@ -1362,17 +1174,9 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => new { e.NotifiId, e.ProjectId })
                     .HasName("notifi_id");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
-                entity.Property(e => e.NotifiId)
-                    .HasColumnName("notifi_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.NotifiId).HasColumnName("notifi_id");
 
                 entity.Property(e => e.Account)
                     .HasColumnName("account")
@@ -1407,17 +1211,9 @@ namespace DaisyDBProject.Models
                 entity.HasIndex(e => e.ProjectId)
                     .HasName("project_id");
 
-                entity.Property(e => e.GroupId)
-                    .HasColumnName("group_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.GroupId).HasColumnName("group_id");
 
-                entity.Property(e => e.ProjectId)
-                    .HasColumnName("project_id")
-                    .HasColumnType("varchar(10)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
                 entity.Property(e => e.Introduction)
                     .HasColumnName("introduction")

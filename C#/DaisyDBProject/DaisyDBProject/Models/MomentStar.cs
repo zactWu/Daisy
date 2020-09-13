@@ -5,7 +5,7 @@ namespace DaisyDBProject.Models
 {
     public partial class MomentStar
     {
-        public string MomentId { get; set; }
+        public int MomentId { get; set; }
         public string Account { get; set; }
         public string Name { get; set; }
 
