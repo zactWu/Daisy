@@ -5,7 +5,7 @@ namespace DaisyDBProject.Models
 {
     public partial class UserNotice
     {
-        public string NoticeId { get; set; }
+        public int NoticeId { get; set; }
         public string Account { get; set; }
         public int? ReadTag { get; set; }
 

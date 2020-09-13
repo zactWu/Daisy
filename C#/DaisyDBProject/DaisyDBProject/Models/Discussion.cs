@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DaisyDBProject.Models
 {
@@ -11,8 +12,9 @@ namespace DaisyDBProject.Models
             ReportDisc = new HashSet<ReportDisc>();
         }
 
-        public string DiscussionId { get; set; }
-        public string ProjectId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int DiscussionId { get; set; }
+        public int ProjectId { get; set; }
         public string Account { get; set; }
         public string Time { get; set; }
         public string Content { get; set; }

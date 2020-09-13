@@ -5,9 +5,9 @@ namespace DaisyDBProject.Models
 {
     public partial class PostStar
     {
-        public string ProjectId { get; set; }
-        public string GroupId { get; set; }
-        public string PostId { get; set; }
+        public int ProjectId { get; set; }
+        public int GroupId { get; set; }
+        public int PostId { get; set; }
         public string Account { get; set; }
         public string Name { get; set; }
 

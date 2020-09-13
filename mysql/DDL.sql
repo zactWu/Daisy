@@ -17,7 +17,7 @@ CREATE TABLE users(
 );
 
 CREATE TABLE administrator(
-    administrator_id    VARCHAR(10),
+    administrator_id    INTEGER,
     name                VARCHAR(20) NOT NULL,
     password            VARCHAR(20) NOT NULL,
     phone_num           VARCHAR(14),
@@ -27,7 +27,7 @@ CREATE TABLE administrator(
 );
 
 CREATE TABLE project(
-    project_id          VARCHAR(10),
+    project_id          INTEGER,
     name                VARCHAR(20) NOT NULL,
     introduction        VARCHAR(100),
     participants_number INTEGER CHECK (participants_number > 0) DEFAULT 1,
@@ -38,8 +38,8 @@ CREATE TABLE project(
 );
 
 CREATE TABLE usergroups(
-    group_id            VARCHAR(10),
-    project_id          VARCHAR(10) NOT NULL,  
+    group_id            INTEGER,
+    project_id          INTEGER NOT NULL,  
     leader_account      VARCHAR(20) NOT NULL,     
     name                VARCHAR(20),
     introduction        VARCHAR(100),
@@ -50,7 +50,7 @@ CREATE TABLE usergroups(
 );
 
 CREATE TABLE notice(
-    notice_id           VARCHAR(10),
+    notice_id           INTEGER,
     title               VARCHAR(20) NOT NULL,
     time                VARCHAR(20),
     content             VARCHAR(200),
@@ -68,7 +68,7 @@ CREATE TABLE favourite_package(
 );
 
 CREATE TABLE moment(
-    moment_id           VARCHAR(10),
+    moment_id           INTEGER,
     account             VARCHAR(20) NOT NULL,
     title               VARCHAR(20) NOT NULL,
     time                VARCHAR(20),
@@ -78,8 +78,8 @@ CREATE TABLE moment(
 );
 
 CREATE TABLE comment(
-    comment_id           VARCHAR(10),
-    moment_id            VARCHAR(10),
+    comment_id           INTEGER,
+    moment_id            INTEGER,
     account              VARCHAR(20) NOT NULL,
     time                 VARCHAR(20),
     content              VARCHAR(200),
@@ -90,8 +90,8 @@ CREATE TABLE comment(
 );
 
 CREATE TABLE reply(
-    reply_id               VARCHAR(10),
-    comment_id             VARCHAR(10),
+    reply_id               INTEGER,
+    comment_id             INTEGER,
     account                VARCHAR(20) NOT NULL,
     time                   VARCHAR(20),
     content                VARCHAR(200),
@@ -102,7 +102,7 @@ CREATE TABLE reply(
 );
 
 CREATE TABLE message(
-    message_id              VARCHAR(10),
+    message_id              INTEGER,
     send_account            VARCHAR(20) NOT NULL,
     receive_account         VARCHAR(20) NOT NULL,
     read_tag                INTEGER CHECK (read_tag IN(0, 1)),
@@ -114,7 +114,7 @@ CREATE TABLE message(
 );
 
 CREATE TABLE report(
-    report_id               VARCHAR(10),
+    report_id               INTEGER,
     account                 VARCHAR(20) NOT NULL,
     report_type             VARCHAR(10) NOT NULL,
     time                    VARCHAR(20),
@@ -125,7 +125,7 @@ CREATE TABLE report(
 );
 
 CREATE TABLE leave_message(
-    leave_message_id        VARCHAR(10),
+    leave_message_id        INTEGER,
     account                 VARCHAR(20) NOT NULL,
     time                    VARCHAR(20),
     content                 VARCHAR(200),
@@ -135,8 +135,8 @@ CREATE TABLE leave_message(
 );
 
 CREATE TABLE notification(
-    notifi_id               VARCHAR(10),
-    project_id              VARCHAR(10) NOT NULL,
+    notifi_id               INTEGER,
+    project_id              INTEGER NOT NULL,
     time                    VARCHAR(20),
     content                 VARCHAR(200),
     title                   VARCHAR(20) NOT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE notification(
 );
 
 CREATE TABLE lift_ban(
-    lift_ban_id              VARCHAR(10),
+    lift_ban_id              INTEGER,
     account                  VARCHAR(20) NOT NULL,
     time                     VARCHAR(20),
     content                  VARCHAR(200),
@@ -156,8 +156,8 @@ CREATE TABLE lift_ban(
 );
 
 CREATE TABLE discussion(
-    discussion_id            VARCHAR(10),
-    project_id               VARCHAR(10) NOT NULL,
+    discussion_id            INTEGER,
+    project_id               INTEGER NOT NULL,
     account                  VARCHAR(20) NOT NULL,
     time                     VARCHAR(20),
     content                  VARCHAR(200) NOT NULL,
@@ -169,9 +169,9 @@ CREATE TABLE discussion(
 );
 
 CREATE TABLE post(
-    post_id                   VARCHAR(10),
-    project_id                VARCHAR(10) NOT NULL,
-    group_id                  VARCHAR(10) NOT NULL,
+    post_id                   INTEGER,
+    project_id                INTEGER NOT NULL,
+    group_id                  INTEGER NOT NULL,
     post_time                 VARCHAR(20),
     content                   VARCHAR(200) NOT NULL,
     max_member_num            INTEGER CHECK(max_member_num > 0),
@@ -182,7 +182,7 @@ CREATE TABLE post(
 );
 
 CREATE TABLE user_notice(
-    notice_id                  VARCHAR(10),
+    notice_id                  INTEGER,
     account                    VARCHAR(20) NOT NULL,
     read_tag                   INTEGER CHECK (read_tag IN (0, 1)),
     PRIMARY KEY (notice_id, account),
@@ -201,8 +201,8 @@ CREATE TABLE follow(
 
 
 CREATE TABLE user_notifi(
-    project_id                 VARCHAR(10) NOT NULL,
-    notifi_id                  VARCHAR(10) NOT NULL,
+    project_id                 INTEGER NOT NULL,
+    notifi_id                  INTEGER NOT NULL,
     account                    VARCHAR(20) NOT NULL,
     read_tag                   INTEGER CHECK (read_tag IN(0, 1)),
     PRIMARY KEY (project_id, notifi_id, account),
@@ -212,8 +212,8 @@ CREATE TABLE user_notifi(
 );
 
 CREATE TABLE like_disc(
-    discussion_id              VARCHAR(10) NOT NULL,
-    project_id                 VARCHAR(10) NOT NULL,
+    discussion_id              INTEGER NOT NULL,
+    project_id                 INTEGER NOT NULL,
     account                    VARCHAR(20) NOT NULL,
     PRIMARY KEY (discussion_id, account, project_id),
     FOREIGN KEY (discussion_id, project_id) REFERENCES 
@@ -223,7 +223,7 @@ CREATE TABLE like_disc(
 );
 
 CREATE TABLE like_moment(
-    moment_id                 VARCHAR(10) NOT NULL,
+    moment_id                 INTEGER NOT NULL,
     account                   VARCHAR(20) NOT NULL,
     PRIMARY KEY (moment_id, account),
     FOREIGN KEY (moment_id) REFERENCES moment(moment_id)
@@ -232,7 +232,7 @@ CREATE TABLE like_moment(
 );
 
 CREATE TABLE subscribe(
-    project_id                VARCHAR(10) NOT NULL,
+    project_id                INTEGER NOT NULL,
     account                   VARCHAR(20) NOT NULL,
     PRIMARY KEY (project_id, account),
     FOREIGN KEY (project_id) REFERENCES project(project_id)
@@ -241,8 +241,8 @@ CREATE TABLE subscribe(
 );
 
 CREATE TABLE application(
-    project_id                VARCHAR(10) NOT NULL,
-    group_id                  VARCHAR(10) NOT NULL,
+    project_id                INTEGER NOT NULL,
+    group_id                  INTEGER NOT NULL,
     account                   VARCHAR(20) NOT NULL,
     status                    VARCHAR(20) CHECK (status in ('successful', 'failed', 'Unprocessed')),
     content                   VARCHAR(200),
@@ -253,8 +253,8 @@ CREATE TABLE application(
 );
 
 CREATE TABLE member(
-    project_id                VARCHAR(10) NOT NULL,
-    group_id                  VARCHAR(10) NOT NULL,
+    project_id                INTEGER NOT NULL,
+    group_id                  INTEGER NOT NULL,
     account                   VARCHAR(20) NOT NULL,
     PRIMARY KEY (project_id, group_id, account),
     FOREIGN KEY (group_id, project_id) REFERENCES usergroups(group_id, project_id)
@@ -263,9 +263,9 @@ CREATE TABLE member(
 );
 
 CREATE TABLE post_star(
-    project_id                VARCHAR(10) NOT NULL,
-    group_id                  VARCHAR(10) NOT NULL,
-    post_id                   VARCHAR(10) NOT NULL,
+    project_id                INTEGER NOT NULL,
+    group_id                  INTEGER NOT NULL,
+    post_id                   INTEGER NOT NULL,
     account                   VARCHAR(20) NOT NULL,
     name                      VARCHAR(20) NOT NULL,
     PRIMARY KEY (project_id, group_id, account, post_id, name),
@@ -276,7 +276,7 @@ CREATE TABLE post_star(
 );
 
 CREATE TABLE moment_star(
-    moment_id                 VARCHAR(10) NOT NULL,   
+    moment_id                 INTEGER NOT NULL,   
     account                   VARCHAR(20) NOT NULL,
     name                      VARCHAR(20) NOT NULL,
     PRIMARY KEY (moment_id, account, name),
@@ -287,8 +287,8 @@ CREATE TABLE moment_star(
 );
 
 CREATE TABLE reply_reply(
-    id_to_reply                VARCHAR(10) NOT NULL,   
-    id_replied                 VARCHAR(10) NOT NULL,
+    id_to_reply                INTEGER NOT NULL,   
+    id_replied                 INTEGER NOT NULL,
     PRIMARY KEY (id_to_reply, id_replied),
     FOREIGN KEY (id_to_reply)   REFERENCES reply(reply_id)
         ON DELETE CASCADE,
@@ -297,8 +297,8 @@ CREATE TABLE reply_reply(
 );
 
 CREATE TABLE report_reply(
-    report_id                  VARCHAR(10) NOT NULL,   
-    reply_id                   VARCHAR(10) NOT NULL,
+    report_id                  INTEGER NOT NULL,   
+    reply_id                   INTEGER NOT NULL,
     PRIMARY KEY (report_id, reply_id),
     FOREIGN KEY (report_id)     REFERENCES report(report_id)
         ON DELETE CASCADE,
@@ -307,8 +307,8 @@ CREATE TABLE report_reply(
 );
 
 CREATE TABLE report_com(
-    report_id                  VARCHAR(10) NOT NULL,   
-    comment_id                 VARCHAR(10) NOT NULL,
+    report_id                  INTEGER NOT NULL,   
+    comment_id                 INTEGER NOT NULL,
     PRIMARY KEY (report_id, comment_id),
     FOREIGN KEY (report_id)     REFERENCES report(report_id)
         ON DELETE CASCADE,
@@ -317,8 +317,8 @@ CREATE TABLE report_com(
 );
 
 CREATE TABLE report_mom(
-    report_id                   VARCHAR(10) NOT NULL,   
-    moment_id                   VARCHAR(10) NOT NULL,
+    report_id                   INTEGER NOT NULL,   
+    moment_id                   INTEGER NOT NULL,
     PRIMARY KEY (report_id, moment_id),
     FOREIGN KEY (report_id)     REFERENCES report(report_id)
         ON DELETE CASCADE,
@@ -327,9 +327,9 @@ CREATE TABLE report_mom(
 );
 
 CREATE TABLE report_disc(
-    report_id                   VARCHAR(10) NOT NULL,   
-    project_id                  VARCHAR(10) NOT NULL,
-    discussion_id               VARCHAR(10) NOT NULL,
+    report_id                   INTEGER NOT NULL,   
+    project_id                  INTEGER NOT NULL,
+    discussion_id               INTEGER NOT NULL,
     PRIMARY KEY (report_id,project_id, discussion_id),
     FOREIGN KEY (report_id)     REFERENCES report(report_id)
           ON DELETE CASCADE,
@@ -339,9 +339,9 @@ CREATE TABLE report_disc(
 );
 
 CREATE TABLE group_message(
-    group_message_id            VARCHAR(10) NOT NULL,   
-    group_id                    VARCHAR(10),
-    project_id                  VARCHAR(10) NOT NULL,
+    group_message_id            INTEGER NOT NULL,   
+    group_id                    INTEGER,
+    project_id                  INTEGER NOT NULL,
     content                     VARCHAR(100) NOT NULL,
     time                        VARCHAR(20),
     PRIMARY KEY (group_message_id),
@@ -350,7 +350,7 @@ CREATE TABLE group_message(
 );
 
 CREATE TABLE user_group_message(
-    group_message_id            VARCHAR(10) NOT NULL,
+    group_message_id            INTEGER NOT NULL,
     account                     VARCHAR(20) NOT NULL, 
     PRIMARY KEY (group_message_id, account),
     FOREIGN KEY (group_message_id)     

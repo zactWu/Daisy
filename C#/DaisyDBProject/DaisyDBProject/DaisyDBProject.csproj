@@ -6,7 +6,7 @@
 	  <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">

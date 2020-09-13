@@ -5,8 +5,8 @@ namespace DaisyDBProject.Models
 {
     public partial class Member
     {
-        public string ProjectId { get; set; }
-        public string GroupId { get; set; }
+        public int ProjectId { get; set; }
+        public int GroupId { get; set; }
         public string Account { get; set; }
 
         public virtual Users AccountNavigation { get; set; }
