@@ -42,9 +42,5 @@ namespace DaisyDBProject.Controllers
             return CreatedAtAction("GetNotice", new { id = notice.NoticeId }, notice);
         }
 
-        private bool NoticeExists(int id)
-        {
-            return _context.Notice.Any(e => e.NoticeId == id);
-        }
     }
 }

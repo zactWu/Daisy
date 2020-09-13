@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DaisyDBProject.Models;
+using DaisyDBProject;
 
 namespace DaisyDBProject.Controllers
 {
@@ -20,83 +21,68 @@ namespace DaisyDBProject.Controllers
             _context = context;
         }
 
-        // GET: api/Comment
+        //未测试
+        // GET: api/Comment?MomentId=
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetComment()
-        {
-            return await _context.Comment.ToListAsync();
+        public ActionResult<IEnumerable<Object>> GetComment(string momentId){
+            var query = from comment in _context.Set<Comment>()
+                        join user in _context.Set<Users>()
+                            on comment.Account equals user.Account
+                        select new {
+                            comment.CommentId, comment.Account,
+                            comment.Content, comment.Time, user.Nickname,
+                            Icon = Helper.GetImageFromPath(user.IconUrl)
+                        };
+            return query.ToList();
+  
         }
 
+        //未测试
         // GET: api/Comment/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comment>> GetComment(int id)
-        {
-            var comment = await _context.Comment.FindAsync(id);
-
-            if (comment == null)
-            {
+        public ActionResult<Object> GetComment(int id){
+            var comment = _context.Comment.Find(id);
+            if (comment == null){
                 return NotFound();
             }
-
-            return comment;
+            var user = _context.Users.Find(comment.Account);
+            var result = new {
+                Icon = Helper.GetImageFromPath(user.IconUrl), user.Account,
+                user.Nickname, comment.Content, comment.Time,
+                ReplyList = (
+                from reply in _context.Set<Reply>()
+                where reply.CommentId == comment.CommentId
+                select reply
+                ).ToList()              
+            };
+            return result;
         }
 
-        // PUT: api/Comment/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment(int id, Comment comment)
-        {
-            if (id != comment.CommentId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(comment).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CommentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/Comment
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Comment>> PostComment(Comment comment)
-        {
+        public ActionResult<Comment> PostComment(Comment comment){
             _context.Comment.Add(comment);
-            await _context.SaveChangesAsync();
+            try {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException) {
+                throw;
+            }
 
             return CreatedAtAction("GetComment", new { id = comment.CommentId }, comment);
         }
 
         // DELETE: api/Comment/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Comment>> DeleteComment(int id)
-        {
-            var comment = await _context.Comment.FindAsync(id);
-            if (comment == null)
-            {
+        public ActionResult<Comment> DeleteComment(int id){
+            var comment =  _context.Comment.Find(id);
+            if (comment == null){
                 return NotFound();
             }
 
             _context.Comment.Remove(comment);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             return comment;
         }
