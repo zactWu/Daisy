@@ -12,7 +12,7 @@ namespace DaisyDBProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CommentController : ControllerBase
+    public class CommentController : Controller
     {
         private readonly DaisyContext _context;
 
@@ -21,7 +21,6 @@ namespace DaisyDBProject.Controllers
             _context = context;
         }
 
-        //未测试
         // GET: api/Comment?MomentId=
         [HttpGet]
         public ActionResult<IEnumerable<Object>> GetComment(string momentId){
@@ -37,7 +36,6 @@ namespace DaisyDBProject.Controllers
   
         }
 
-        //未测试
         // GET: api/Comment/5
         [HttpGet("{id}")]
         public ActionResult<Object> GetComment(int id){
@@ -52,12 +50,11 @@ namespace DaisyDBProject.Controllers
                 ReplyList = (
                 from reply in _context.Set<Reply>()
                 where reply.CommentId == comment.CommentId
-                select reply
-                ).ToList()              
+                select new { reply.ReplyId, reply.Account, reply.Time, reply.Content }
+                ).ToList()             
             };
             return result;
         }
-
 
         // POST: api/Comment
         [HttpPost]
@@ -87,9 +84,5 @@ namespace DaisyDBProject.Controllers
             return comment;
         }
 
-        private bool CommentExists(int id)
-        {
-            return _context.Comment.Any(e => e.CommentId == id);
-        }
     }
 }
