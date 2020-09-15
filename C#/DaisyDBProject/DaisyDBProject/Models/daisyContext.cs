@@ -749,7 +749,6 @@ namespace DaisyDBProject.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
 
-                entity.Property(e => e.CurMemberNum).HasColumnName("cur_member_num");
 
                 entity.Property(e => e.MaxMemberNum).HasColumnName("max_member_num");
 

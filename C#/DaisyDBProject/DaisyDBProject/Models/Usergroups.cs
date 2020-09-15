@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,6 +15,17 @@ namespace DaisyDBProject.Models
             Post = new HashSet<Post>();
         }
 
+        public Usergroups(int projectId, string leaderAccount, string name, string introduction) {
+            ProjectId = projectId;
+            LeaderAccount = leaderAccount;
+            Name = name;
+            Introduction = introduction;
+            Application = new HashSet<Application>();
+            GroupMessage = new HashSet<GroupMessage>();
+            Member = new HashSet<Member>();
+            Post = new HashSet<Post>();
+        }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GroupId { get; set; }
         public int ProjectId { get; set; }
@@ -21,7 +33,9 @@ namespace DaisyDBProject.Models
         public string Name { get; set; }
         public string Introduction { get; set; }
 
+        [JsonIgnore]
         public virtual Users LeaderAccountNavigation { get; set; }
+        [JsonIgnore]
         public virtual Project Project { get; set; }
         public virtual ICollection<Application> Application { get; set; }
         public virtual ICollection<GroupMessage> GroupMessage { get; set; }
