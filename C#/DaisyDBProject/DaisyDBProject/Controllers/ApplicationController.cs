@@ -27,18 +27,29 @@ namespace DaisyDBProject.Controllers
             return await _context.Application.ToListAsync();
         }
 
-        // GET: api/Application/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Application>> GetApplication(int id)
+        // GET: /api/Application?ProjectId=[]&GroupId=[]
+        [HttpGet]
+        public ActionResult<IEnumerable<Object>> GetApplication(int ProjectId, int GroupId)
         {
-            var application = await _context.Application.FindAsync(id);
+            var project = _context.Application.Find(ProjectId);
 
-            if (application == null)
+            var group = _context.Application.Find(GroupId);
+
+            if (project == null || group == null)
             {
                 return NotFound();
             }
 
-            return application;
+            var result =
+                from application in _context.Set<Application>()
+                where application.ProjectId == ProjectId && application.GroupId == GroupId
+                select new
+                {
+                    application.Account,
+                    application.Content,
+                };
+
+            return result.ToList();
         }
 
         // PUT: api/Application/5
