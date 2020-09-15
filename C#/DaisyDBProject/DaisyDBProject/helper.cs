@@ -6,6 +6,7 @@ namespace DaisyDBProject {
     static class Helper {
         
         public static string GetImageFromPath(string path) {
+            if (path == null || path == "") return null;
             FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
             byte[] buffer = new byte[fs.Length];
             fs.Read(buffer, 0, (int)fs.Length);
