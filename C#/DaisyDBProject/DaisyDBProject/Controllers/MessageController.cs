@@ -65,7 +65,6 @@ namespace DaisyDBProject.Controllers
         public ActionResult<Message> PostMessage(Message message)
         {
             _context.Message.Add(message);
-
             try{
                 _context.SaveChanges();
             }
