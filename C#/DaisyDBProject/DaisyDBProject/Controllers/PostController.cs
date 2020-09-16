@@ -41,7 +41,7 @@ namespace DaisyDBProject.Controllers {
                             on gp.LeaderAccount equals user.Account
                         select new {
                             post.PostId, post.GroupId, post.PostTime,
-                            gp.LeaderAccount, user.Nickname, icon = Helper.GetImageFromPath(user.IconUrl)
+                            gp.LeaderAccount, user.Nickname, icon = Helper.GetImageFromPath(user.Icon)
                         };  
 
             return query.ToList();
@@ -61,7 +61,7 @@ namespace DaisyDBProject.Controllers {
             }
 
             return new {post.PostTime, post.Content, 
-                usergroup.LeaderAccount, user.Nickname, icon = Helper.GetImageFromPath(user.IconUrl)
+                usergroup.LeaderAccount, user.Nickname, icon = Helper.GetImageFromPath(user.Icon)
             };
         }
 

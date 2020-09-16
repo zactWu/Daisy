@@ -41,7 +41,7 @@ namespace DaisyDBProject.Models
         public string College { get; set; }
         public int? Grade { get; set; }
         public string StudentNumber { get; set; }
-        public string IconUrl { get; set; }
+        public string Icon { get; set; }
         public string Intro { get; set; }
 
         public virtual ICollection<Application> Application { get; set; }
