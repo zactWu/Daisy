@@ -1272,7 +1272,7 @@ namespace DaisyDBProject.Models
 
                 entity.Property(e => e.Grade).HasColumnName("grade");
 
-                entity.Property(e => e.IconUrl)
+                entity.Property(e => e.Icon)
                     .HasColumnName("icon_url")
                     .HasColumnType("varchar(30)")
                     .HasCharSet("utf8mb4")
