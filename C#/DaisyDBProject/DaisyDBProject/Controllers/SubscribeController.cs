@@ -12,7 +12,7 @@ namespace DaisyDBProject.Controllers {
     [ApiController]
     public class SubscribeController : ControllerBase {
         private readonly DaisyContext _context;
-
+        
         public SubscribeController(DaisyContext context) {
             _context = context;
         }
@@ -27,10 +27,54 @@ namespace DaisyDBProject.Controllers {
             return query.ToList();
         }
 
-       
+        [HttpPost]
+        public ActionResult<Subscribe> PostSubscribe(Subscribe subscribe)
+        {
+            _context.Subscribe.Add(subscribe);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                if (SubscribeExists(subscribe))
+                {
+                    return Conflict();
+                }
+                else if (!UserExists(subscribe.Account))
+                {
+                    return BadRequest();
+                }
+                else if (!ProjectExists(subscribe.ProjectId))
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-        private bool SubscribeExists(int id) {
-            return _context.Subscribe.Any(e => e.ProjectId == id);
+            return CreatedAtAction("GetSubscribe", new { id = subscribe.ProjectId }, subscribe);
         }
+
+        private bool SubscribeExists(Subscribe subscribe)
+        {
+            return _context.Subscribe.Any(e => (e.ProjectId == subscribe.ProjectId) &&
+            (e.Account == subscribe.Account));
+        }
+        private bool UserExists(string account)
+        {
+            return _context.Users.Any(e => e.Account == account);
+        }
+        private bool ProjectExists(int projectId)
+        {
+            return _context.Project.Any(e => e.ProjectId == projectId);
+        }
+
+
+        //private bool SubscribeExists(int id) {
+        //    return _context.Subscribe.Any(e => e.ProjectId == id);
+        //}
     }
 }
