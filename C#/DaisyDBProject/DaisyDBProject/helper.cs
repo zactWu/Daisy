@@ -14,8 +14,9 @@ namespace DaisyDBProject {
             return base64String;
         }
 
-        public static void PutImageIntoPath(string path, string imageBase64) {
-
+        public static string PutImageIntoPath(string imageBase64) {
+            string path = imageBase64;
+            return path;
         }
     }
 }

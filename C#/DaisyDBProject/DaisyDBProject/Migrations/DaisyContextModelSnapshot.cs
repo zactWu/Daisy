@@ -654,10 +654,6 @@ namespace DaisyDBProject.Migrations
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
-                    b.Property<int>("CurMemberNum")
-                        .HasColumnName("cur_member_num")
-                        .HasColumnType("int");
-
                     b.Property<int>("MaxMemberNum")
                         .HasColumnName("max_member_num")
                         .HasColumnType("int");
@@ -1117,7 +1113,7 @@ namespace DaisyDBProject.Migrations
                         .HasColumnName("grade")
                         .HasColumnType("int");
 
-                    b.Property<string>("IconUrl")
+                    b.Property<string>("Icon")
                         .HasColumnName("icon_url")
                         .HasColumnType("varchar(30)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")

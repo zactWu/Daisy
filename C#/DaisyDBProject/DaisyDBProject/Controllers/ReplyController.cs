@@ -32,7 +32,7 @@ namespace DaisyDBProject.Controllers
                         select new {
                             reply.Account, reply.ReplyId,
                             reply.Time, reply.Content, user.Nickname,
-                            Icon = Helper.GetImageFromPath(user.IconUrl)
+                            Icon = Helper.GetImageFromPath(user.Icon)
                         };
             return query.ToList();
         }

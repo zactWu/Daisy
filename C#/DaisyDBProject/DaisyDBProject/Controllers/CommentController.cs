@@ -31,7 +31,7 @@ namespace DaisyDBProject.Controllers
                         select new {
                             comment.CommentId, comment.Account,
                             comment.Content, comment.Time, user.Nickname,
-                            Icon = Helper.GetImageFromPath(user.IconUrl)
+                            Icon = Helper.GetImageFromPath(user.Icon)
                         };
             return query.ToList();
   
@@ -46,7 +46,7 @@ namespace DaisyDBProject.Controllers
             }
             var user = _context.Users.Find(comment.Account);
             var result = new {
-                Icon = Helper.GetImageFromPath(user.IconUrl), user.Account,
+                Icon = Helper.GetImageFromPath(user.Icon), user.Account,
                 user.Nickname, comment.Content, comment.Time,
                 ReplyList = (
                 from reply in _context.Set<Reply>()
