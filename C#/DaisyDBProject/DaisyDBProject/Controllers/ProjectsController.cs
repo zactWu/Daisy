@@ -24,39 +24,9 @@ namespace DaisyDBProject.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Project>> GetProject()
         {
-            //switch (key.ToLower())
-            //{
-            //    case "name":
-            //        var query_name = from project in _context.Set<Project>()
-            //                    orderby project.Name
-            //                    select project;
-            //        return query_name.ToList();
-            //    case "id":
-            //        var query_id = from project in _context.Set<Project>()
-            //                    orderby project.ProjectId
-            //                    select project;
-            //        return query_id.ToList();
-            //    case "par":
-            //        var query_par = from project in _context.Set<Project>()
-            //                       orderby project.ParticipantsNumber
-            //                       select project;
-            //        return query_par.ToList();
-            //    case "time":
-            //        var query_time = from project in _context.Set<Project>()
-            //                       orderby project.StartTime
-            //                       select project;
-            //        return query_time.ToList();
-            //    case "host":
-            //        var query_host = from project in _context.Set<Project>()
-            //                       orderby project.Host
-            //                       select project;
-            //        return query_host.ToList();
-            //    default:
-            //        var query = from project in _context.Set<Project>()
-            //                       select project;
-            //        return query.ToList();
-            //}
-            return _context.Project.ToList();
+            var query = from project in _context.Set<Project>()
+                        select project;
+            return query.OrderBy(q => q.StartTime).ToList();
         }
         // GET: api/Projects/5
         [HttpGet,Route("search")]
@@ -79,6 +49,14 @@ namespace DaisyDBProject.Controllers
             return project;
         }
 
+        [HttpGet,Route("random")]
+        public ActionResult<IEnumerable<Project>> GetRandomProjects()
+        {
+            var query = from project in _context.Set<Project>()
+                        select project;
+            var result=query.OrderBy(q=>Guid.NewGuid()).Take(15);
+            return query.ToList();
+        }
         // PUT: api/Projects/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
