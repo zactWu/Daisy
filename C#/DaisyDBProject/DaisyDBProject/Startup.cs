@@ -28,14 +28,14 @@ namespace DaisyDBProject {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers();
+            
             services.AddDbContext<DaisyContext>(options => {
                 var builder = new SqlConnectionStringBuilder(
                      Configuration.GetConnectionString("DaisyConnection"));
                 builder.DataSource = Configuration["ServerIP"];
-                builder.UserID = Configuration["Userid"];
-                builder.Password = Configuration["DbPassword"];
                 options.UseMySQL(builder.ConnectionString);
             });
+
             services.AddScoped<IAuthenticateService, TokenAuthenticationService>();
             services.AddScoped<IUserService, UserService>();
             services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));

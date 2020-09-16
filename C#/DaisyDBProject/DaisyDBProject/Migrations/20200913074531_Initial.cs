@@ -633,7 +633,6 @@ namespace DaisyDBProject.Migrations
                     post_time = table.Column<string>(type: "varchar(20)", nullable: true),
                     content = table.Column<string>(type: "varchar(200)", nullable: false),
                     max_member_num = table.Column<int>(nullable: false),
-                    cur_member_num = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
