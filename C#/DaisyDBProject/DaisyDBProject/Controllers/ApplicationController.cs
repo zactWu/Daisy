@@ -20,56 +20,53 @@ namespace DaisyDBProject.Controllers
             _context = context;
         }
 
-        // GET: api/Application
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Application>>> GetApplication()
-        {
-            return await _context.Application.ToListAsync();
-        }
+        
 
         // GET: /api/Application?ProjectId=[]&GroupId=[]
         [HttpGet]
         public ActionResult<IEnumerable<Object>> GetApplication(int ProjectId, int GroupId)
         {
-            var project = _context.Application.Find(ProjectId);
-
-            var group = _context.Application.Find(GroupId);
-
-            if (project == null || group == null)
-            {
-                return NotFound();
-            }
-
             var result =
                 from application in _context.Set<Application>()
                 where application.ProjectId == ProjectId && application.GroupId == GroupId
                 select new
                 {
                     application.Account,
-                    application.Content,
+                    application.Content
                 };
 
             return result.ToList();
         }
 
-        // PUT: api/Application/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutApplication(int id, Application application)
+        // PUT: api/Application
+        [HttpPut]
+        public IActionResult PutApplication(int projectid, int groupid, string account, string result, Application application)
         {
-            if (id != application.ProjectId)
+            if (result == "successful")
             {
-                return BadRequest();
+                var group = _context.Usergroups.Find(groupid, projectid);
+                var num = group.Member.Count();
+                num++;
+                Member new_member = new Member {
+                    ProjectId=projectid,
+                    GroupId=groupid,
+                    Account=account
+                };
+                //var new_member = _context.Users.Find(account);
+                _context.Member.Add(new_member);
+                application.Status = "successful";
             }
-
-            _context.Entry(application).State = EntityState.Modified;
-
+            else
+            {
+                application.Status = "failed";
+            }
             try
             {
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ApplicationExists(id))
+                if (!ApplicationExists(projectid, groupid, account))
                 {
                     return NotFound();
                 }
@@ -86,6 +83,7 @@ namespace DaisyDBProject.Controllers
         [HttpPost]
         public ActionResult<Application> PostApplication(Application application)
         {
+            application.Status = "Unprocessed";
             _context.Application.Add(application);
             try
             {
@@ -93,7 +91,7 @@ namespace DaisyDBProject.Controllers
             }
             catch (DbUpdateException)
             {
-                if (ApplicationExists(application.ProjectId))
+                if (ApplicationExists(application.ProjectId, application.GroupId, application.Account))
                 {
                     return Conflict();
                 }
@@ -106,9 +104,9 @@ namespace DaisyDBProject.Controllers
             return CreatedAtAction("GetApplication", new { id = application.ProjectId }, application);
         }
 
-        private bool ApplicationExists(int id)
+        private bool ApplicationExists(int projectid, int groupid, string account)
         {
-            return _context.Application.Any(e => e.ProjectId == id);
+            return _context.Application.Any(e => e.ProjectId == projectid && e.GroupId == groupid && e.Account == account);
         }
     }
 }
