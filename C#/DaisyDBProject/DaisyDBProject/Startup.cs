@@ -18,14 +18,14 @@ namespace DaisyDBProject {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers();
+            
             services.AddDbContext<DaisyContext>(options => {
                 var builder = new SqlConnectionStringBuilder(
                      Configuration.GetConnectionString("DaisyConnection"));
                 builder.DataSource = Configuration["ServerIP"];
-                builder.UserID = Configuration["Userid"];
-                builder.Password = Configuration["DbPassword"];
                 options.UseMySQL(builder.ConnectionString);
             });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
