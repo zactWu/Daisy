@@ -72,7 +72,7 @@ namespace DaisyDBProject.Migrations
                     college = table.Column<string>(type: "varchar(20)", nullable: true),
                     grade = table.Column<int>(nullable: true),
                     student_number = table.Column<string>(type: "varchar(10)", nullable: true),
-                    icon_url = table.Column<string>(type: "varchar(30)", nullable: true),
+                    icon_url = table.Column<string>(type: "varchar(10000)", nullable: true),
                     intro = table.Column<string>(type: "varchar(100)", nullable: true)
                 },
                 constraints: table =>

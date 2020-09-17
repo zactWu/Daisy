@@ -66,7 +66,7 @@ namespace DaisyDBProject.Controllers
             var leaderusr = _context.Users.Find(group.LeaderAccount);
             var result = new {
                 Curmemnum = group.Member.Count(),
-                Icon = Helper.GetImageFromPath(leaderusr.Icon),
+                Icon = ALiYunOss.GetImageFromPath(leaderusr.Icon),
                 sequence = (
                 from project in _context.Set<Project>()
                 join post in _context.Set<Post>()
