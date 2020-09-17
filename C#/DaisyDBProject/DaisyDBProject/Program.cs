@@ -18,6 +18,7 @@ namespace DaisyDBProject {
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => {
+                    webBuilder.UseUrls("http://*:8080");
                     webBuilder.ConfigureKestrel(serverOptions => {
 
                     })
