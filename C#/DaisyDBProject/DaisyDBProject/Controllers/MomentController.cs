@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DaisyDBProject.Models;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DaisyDBProject.Controllers
 {
@@ -79,6 +80,7 @@ namespace DaisyDBProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize]
         public ActionResult<Moment> PostMoment(Moment moment)
         {
             _context.Moment.Add(moment);
@@ -96,6 +98,7 @@ namespace DaisyDBProject.Controllers
 
         // DELETE: api/Moments/5
         [HttpDelete("{id}")]
+        [Authorize]
         public ActionResult<Moment> DeleteMoment(int id)
         {
             var moment = _context.Moment.Find(id);

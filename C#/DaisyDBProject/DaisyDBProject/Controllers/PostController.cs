@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DaisyDBProject.Models;
-using DaisyDBProject;
+using DaisyDBProject.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DaisyDBProject.Controllers {
     public class GroupPost {
@@ -22,6 +23,7 @@ namespace DaisyDBProject.Controllers {
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PostController : ControllerBase {
         private readonly DaisyContext _context;
 
@@ -67,6 +69,7 @@ namespace DaisyDBProject.Controllers {
 
         // POST: api/Post
         [HttpPost]
+        [Authorize]
         public ActionResult<Post> PostPost(GroupPost groupPost) {
 
             Usergroups usergroups = new Usergroups

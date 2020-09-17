@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DaisyDBProject.Models;
-using DaisyDBProject;
+using DaisyDBProject.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DaisyDBProject.Controllers
 {
@@ -59,6 +60,7 @@ namespace DaisyDBProject.Controllers
 
         // POST: api/Comment
         [HttpPost]
+        [Authorize]
         public ActionResult<Comment> PostComment(Comment comment){
             _context.Comment.Add(comment);
             try {
@@ -73,6 +75,7 @@ namespace DaisyDBProject.Controllers
 
         // DELETE: api/Comment/5
         [HttpDelete("{id}")]
+        [Authorize]
         public ActionResult<Comment> DeleteComment(int id){
             var comment =  _context.Comment.Find(id);
             if (comment == null){

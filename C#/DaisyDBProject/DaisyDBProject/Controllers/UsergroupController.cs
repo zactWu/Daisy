@@ -6,12 +6,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DaisyDBProject.Models;
+using DaisyDBProject.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace DaisyDBProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsergroupController : ControllerBase
     {
         private readonly DaisyContext _context;

@@ -8,11 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using DaisyDBProject.Models;
 using Microsoft.CodeAnalysis;
 using Project = DaisyDBProject.Models.Project;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DaisyDBProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DiscussionController : ControllerBase
     {
         private readonly DaisyContext _context;

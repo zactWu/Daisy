@@ -4,19 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using DaisyDBProject.Models;
 using System.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using DaisyDBProject.Models;
+using DaisyDBProject.Helpers;
 
 namespace DaisyDBProject {
     public class Startup {
@@ -37,8 +31,6 @@ namespace DaisyDBProject {
                 options.UseMySQL(builder.ConnectionString);
             });
 
-            services.AddScoped<IAuthenticateService, TokenAuthenticationService>();
-            services.AddScoped<IUserService, UserService>();
             services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
             var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
             services.AddAuthentication(x =>{

@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DaisyDBProject
-{
-    public class TokenManagement
-    {
+namespace DaisyDBProject.Helpers{
+    public class TokenManagement{
             [JsonProperty("secret")]
             public string Secret { get; set; }
 
