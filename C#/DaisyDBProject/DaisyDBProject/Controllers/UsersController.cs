@@ -62,7 +62,7 @@ namespace DaisyDBProject.Controllers {
             var query = from user in _context.Set<Users>()
                         where user.Name == name
                         select new {
-                            icon = Helper.GetImageFromPath(user.Icon),
+                            icon = ALiYunOss.GetImageFromPath(user.Icon),
                             user.Account, user.Nickname
                         };            
             return query.ToList();
@@ -78,7 +78,7 @@ namespace DaisyDBProject.Controllers {
                 return NotFound();
             }
             users.Password = "";
-            users.Icon = Helper.GetImageFromPath(users.Icon);
+            users.Icon = ALiYunOss.GetImageFromPath(users.Icon);
             return users;
         }
 
@@ -87,8 +87,9 @@ namespace DaisyDBProject.Controllers {
         [Authorize]
         public IActionResult PutUsers(string account, UserPut userput) {
 
+            ALiYunOss.PutImageIntoPath(userput.icon, account);
             Users user = _context.Users.Find(account);
-            user.Icon = Helper.PutImageIntoPath(userput.icon);
+            user.Icon = account;
             user.Name = userput.name;
             user.Nickname = userput.nickname;
             user.PhoneNum = userput.phoneNum;
@@ -118,7 +119,8 @@ namespace DaisyDBProject.Controllers {
         // POST: api/Users
         [HttpPost]
         public ActionResult<Users> PostUsers(Users users) {
-            users.Icon = Helper.PutImageIntoPath(users.Icon);
+            ALiYunOss.PutImageIntoPath(users.Icon, users.Account);
+            users.Icon = users.Account;
             _context.Users.Add(users);
             try {
                 _context.SaveChanges();

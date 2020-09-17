@@ -23,7 +23,6 @@ namespace DaisyDBProject.Controllers {
 
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class PostController : ControllerBase {
         private readonly DaisyContext _context;
 
@@ -43,7 +42,7 @@ namespace DaisyDBProject.Controllers {
                             on gp.LeaderAccount equals user.Account
                         select new {
                             post.PostId, post.GroupId, post.PostTime,
-                            gp.LeaderAccount, user.Nickname, icon = Helper.GetImageFromPath(user.Icon)
+                            gp.LeaderAccount, user.Nickname, icon = ALiYunOss.GetImageFromPath(user.Icon)
                         };  
 
             return query.ToList();
@@ -63,7 +62,7 @@ namespace DaisyDBProject.Controllers {
             }
 
             return new {post.PostTime, post.Content, 
-                usergroup.LeaderAccount, user.Nickname, icon = Helper.GetImageFromPath(user.Icon)
+                usergroup.LeaderAccount, user.Nickname, icon = ALiYunOss.GetImageFromPath(user.Icon)
             };
         }
 

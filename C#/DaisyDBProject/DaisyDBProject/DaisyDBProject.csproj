@@ -6,6 +6,7 @@
 	  <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Aliyun.OSS.SDK.NetCore" Version="2.11.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">
       <PrivateAssets>all</PrivateAssets>
