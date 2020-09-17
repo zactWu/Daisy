@@ -21,6 +21,7 @@ namespace DaisyDBProject.Controllers
             _context = context;
         }
 
+
         // GET: api/Comment?MomentId=
         [HttpGet]
         public ActionResult<IEnumerable<Object>> GetComment(string momentId){
