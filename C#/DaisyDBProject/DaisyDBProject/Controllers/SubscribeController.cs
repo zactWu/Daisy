@@ -12,7 +12,7 @@ namespace DaisyDBProject.Controllers {
     [ApiController]
     public class SubscribeController : ControllerBase {
         private readonly DaisyContext _context;
-        
+
         public SubscribeController(DaisyContext context) {
             _context = context;
         }
@@ -27,6 +27,12 @@ namespace DaisyDBProject.Controllers {
             return query.ToList();
         }
 
+       
+
+        private bool SubscribeExists(int id) {
+            return _context.Subscribe.Any(e => e.ProjectId == id);
+        }
+        
         [HttpPost]
         public ActionResult<Subscribe> PostSubscribe(Subscribe subscribe)
         {

@@ -1,7 +1,6 @@
 *.config
 *.mdb
 *.ldb
-*.sln
 *.vs
 
 # User-specific files
