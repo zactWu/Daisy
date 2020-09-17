@@ -20,15 +20,11 @@ namespace DaisyDBProject {
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers();
             
             services.AddDbContext<DaisyContext>(options => {
-                var builder = new SqlConnectionStringBuilder(
-                     Configuration.GetConnectionString("DaisyConnection"));
-                builder.DataSource = Configuration["ServerIP"];
-                options.UseMySQL(builder.ConnectionString);
+                options.UseMySQL(Configuration.GetConnectionString("DaisyConnection"));
             });
 
             services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
@@ -51,7 +47,6 @@ namespace DaisyDBProject {
             services.Configure<KestrelServerOptions>(Configuration.GetSection("Kestrel"));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
