@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DaisyDBProject.Models;
 using System.Threading.Tasks.Dataflow;
+using DaisyDBProject.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DaisyDBProject.Controllers
 {
@@ -40,6 +42,7 @@ namespace DaisyDBProject.Controllers
 
         // POST: api/Reply
         [HttpPost]
+        [Authorize]
         public ActionResult<Reply> PostReply(Reply reply){
             _context.Reply.Add(reply);
             try {
@@ -54,6 +57,7 @@ namespace DaisyDBProject.Controllers
 
         // DELETE: api/Reply/5
         [HttpDelete("{id}")]
+        [Authorize]
         public ActionResult<Reply> DeleteReply(int id){
             var reply = _context.Reply.Find(id);
             if (reply == null){

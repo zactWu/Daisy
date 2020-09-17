@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using DaisyDBProject.Helpers;
 using DaisyDBProject.Models;
-using DaisyDBProject;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DaisyDBProject.Controllers {
 
@@ -22,13 +28,32 @@ namespace DaisyDBProject.Controllers {
         public string intro { get; set; }
     }
 
+    public class LoginUser {
+        public string account { get; set; }
+        public string password { get; set; }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase {
         private readonly DaisyContext _context;
+        private readonly TokenManagement _tokenManagement;
 
-        public UsersController(DaisyContext context) {
+        public UsersController(DaisyContext context, IOptions<TokenManagement> tokenManagement) {
             _context = context;
+            _tokenManagement = tokenManagement.Value;           
+        }
+
+        private bool IsAuthenticated(LoginUser request, out string token){
+            token = string.Empty;
+            var claims = new[]{
+                new Claim(ClaimTypes.Name,request.account)
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var jwtToken = new JwtSecurityToken(_tokenManagement.Issuer, _tokenManagement.Audience, claims, expires: DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration), signingCredentials: credentials);
+            token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+            return true;
         }
 
         // GET: api/Users
@@ -45,6 +70,7 @@ namespace DaisyDBProject.Controllers {
 
         // GET: api/Users/5
         [HttpGet("{account}")]
+        [Authorize]
         public ActionResult<Users> GetUser(string account) {
             var users = _context.Users.Find(account);
 
@@ -58,6 +84,7 @@ namespace DaisyDBProject.Controllers {
 
         // PUT: api/Users/5
         [HttpPut("{account}")]
+        [Authorize]
         public IActionResult PutUsers(string account, UserPut userput) {
 
             Users user = _context.Users.Find(account);
@@ -106,6 +133,24 @@ namespace DaisyDBProject.Controllers {
             }
 
             return CreatedAtAction("GetUsers", new { id = users.Account }, users);
+        }
+
+
+
+        // POST: api/Users/Login
+        [HttpPost]
+        [Route("Login")]
+        public ActionResult<Object> Login(LoginUser loginUser) {
+            Users user = _context.Users.Find(loginUser.account);
+            if(user == null)
+                return BadRequest("Account doesn't exist1");
+            if (user.Password != loginUser.password) 
+                return BadRequest("Password wrong!");
+            string token;
+            if (IsAuthenticated(loginUser, out token)){
+                return Ok(new {jwt = token});
+            }
+            return BadRequest("Invalid Request");
         }
 
         private bool UsersExists(string id) {

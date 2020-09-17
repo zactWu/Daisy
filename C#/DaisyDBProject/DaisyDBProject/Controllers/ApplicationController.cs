@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DaisyDBProject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DaisyDBProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ApplicationController : ControllerBase
     {
         private readonly DaisyContext _context;
@@ -81,6 +83,7 @@ namespace DaisyDBProject.Controllers
 
         // POST: api/Application
         [HttpPost]
+        [Authorize]
         public ActionResult<Application> PostApplication(Application application)
         {
             application.Status = "Unprocessed";

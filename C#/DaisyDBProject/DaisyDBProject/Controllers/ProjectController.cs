@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DaisyDBProject.Models;
 using Microsoft.CodeAnalysis.Operations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DaisyDBProject.Controllers
 {
@@ -71,6 +72,7 @@ namespace DaisyDBProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize]
         public ActionResult<Project> PutProject(int id, Project project)
         {
             if (id != project.ProjectId)
@@ -102,6 +104,7 @@ namespace DaisyDBProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize]
         public ActionResult<Project> PostProject(Project project)
         {
             _context.Project.Add(project);
@@ -118,6 +121,7 @@ namespace DaisyDBProject.Controllers
 
         // DELETE: api/Projects/5
         [HttpDelete("{id}")]
+        [Authorize]
         public ActionResult<Project> DeleteProject(int id)
         {
             var project = _context.Project.Find(id);
