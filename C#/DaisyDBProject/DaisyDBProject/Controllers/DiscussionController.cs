@@ -14,7 +14,6 @@ namespace DaisyDBProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class DiscussionController : ControllerBase
     {
         private readonly DaisyContext _context;
@@ -41,6 +40,7 @@ namespace DaisyDBProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut]
+        [Authorize]
         public IActionResult PutDiscussion(Discussion discussion)
         {
             _context.Entry(discussion).State = EntityState.Modified;
@@ -68,6 +68,7 @@ namespace DaisyDBProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize]
         public ActionResult<Discussion> PostDiscussion(Discussion discussion)
         {
             _context.Discussion.Add(discussion);
