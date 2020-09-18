@@ -3,60 +3,61 @@ using System;
 using System.IO;
 using System.Text;
 using Aliyun.OSS;
+using Aliyun.OSS.Common;
 
 namespace DaisyDBProject.Helpers {
     static class ALiYunOss {
 
         static private readonly string endpoint = "oss-cn-shanghai.aliyuncs.com";
-
         static private readonly string accessKeyId = "LTAI4G6nTuGNFnHykXVr5ujD";
-
         static private readonly string accessKeySecret = "7elvGGv3ZbhJ1wFJIHbG6SavmuVd8E";
-
         static private readonly string bucketName = "daisydata";
-
         static private readonly OssClient client = new OssClient(endpoint, accessKeyId, accessKeySecret);
         public static string GetImageFromPath(string name) {
-            string image = "";
-            try {
-                var obj = client.GetObject(bucketName, name);
-                using (var requestStream = obj.Content) {
-                    byte[] buf = new byte[10000];
-                    var fs = File.Open(name, FileMode.OpenOrCreate);
-                    var len = 0;
-                    while ((len = requestStream.Read(buf, 0, 10000)) != 0) {
-                        fs.Write(buf, 0, len);
-                    }
-                    fs.Close();
-                    int count = 0;
-                    for(int i = 0; i < 10000; i++) {
-                        if (buf[i] == '\0') {
-                            count = i;
-                            break;
-                        }
-                    }
-                    byte[] temBuf = new byte[count];
-                    for (int i = 0; i < count; i++) {
-                        temBuf[i] = buf[i];
-                    }
-                    image = Encoding.Default.GetString(temBuf);
-                }            
+            try{
+                // 生成签名URL。
+                var req = new GeneratePresignedUriRequest(bucketName, name, SignHttpMethod.Get);
+                var uri = client.GeneratePresignedUri(req);
+                return uri.ToString();
             }
-            catch (Exception ex) {
-                Console.WriteLine("Get object failed. {0}", ex.Message);
+            catch (OssException ex){
+                Console.WriteLine("Failed with error code: {0}; Error info: {1}. \nRequestID:{2}\tHostID:{3}", 
+                    ex.ErrorCode, ex.Message, ex.RequestId, ex.HostId);
             }
-            return image;
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed with error info: {0}", ex.Message);
+            }
+            return "";
         }
 
         public static void PutImageIntoPath(string imageBase64, string name) {
-            try {
-                byte[] binaryData = Encoding.ASCII.GetBytes(imageBase64);
-                MemoryStream requestContent = new MemoryStream(binaryData);
-                client.PutObject(bucketName, name, requestContent);
+            try
+            {
+                // 生成签名URL。
+                var generatePresignedUriRequest = new GeneratePresignedUriRequest(bucketName, name, SignHttpMethod.Put)
+                {
+                    Expiration = DateTime.Now.AddHours(1),
+                };
+                var signedUrl = client.GeneratePresignedUri(generatePresignedUriRequest);
+                // 使用签名URL上传文件。
+                var buffer = Encoding.UTF8.GetBytes(imageBase64);
+                using (var ms = new MemoryStream(buffer))
+                {
+                    client.PutObject(signedUrl, ms);
+                }
+                Console.WriteLine("Put object by signatrue succeeded. {0} ", signedUrl.ToString());
             }
-            catch (Exception ex) {
-                Console.WriteLine("Put object failed, {0}", ex.Message);
+            catch (OssException ex)
+            {
+                Console.WriteLine("Failed with error code: {0}; Error info: {1}. \nRequestID:{2}\tHostID:{3}",
+                    ex.ErrorCode, ex.Message, ex.RequestId, ex.HostId);
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed with error info: {0}", ex.Message);
+            }
+
         }
     }
 }
