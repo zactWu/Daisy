@@ -1115,7 +1115,7 @@ namespace DaisyDBProject.Migrations
 
                     b.Property<string>("Icon")
                         .HasColumnName("icon_url")
-                        .HasColumnType("varchar(30)")
+                        .HasColumnType("varchar(10000)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 

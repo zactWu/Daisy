@@ -1274,7 +1274,7 @@ namespace DaisyDBProject.Models
 
                 entity.Property(e => e.Icon)
                     .HasColumnName("icon_url")
-                    .HasColumnType("varchar(30)")
+                    .HasColumnType("varchar(10000)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
 
