@@ -11,6 +11,16 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace DaisyDBProject.Controllers
 {
+    public class MomentItem{
+        public Moment moment{get; set;}
+        public string icon{get; set;}
+        public string nickname{get; set;}
+        public int likeCount{get; set;}
+        public int commentCount{get; set;}
+        public int starCount{get; set;}
+    }
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class MomentController : ControllerBase
@@ -50,29 +60,53 @@ namespace DaisyDBProject.Controllers
         }
 
         [HttpGet,Route("search")]
-        public ActionResult<IEnumerable<Moment>> SearchMoment(string name, string orderby)
+        public ActionResult<IEnumerable<MomentItem>> SearchMoment(string name, string orderby)
         {
-            var query = from moment in _context.Set<Moment>()
-                        where moment.Title == name
-                        select moment;
+            var query = from mom in _context.Set<Moment>()
+                        from user in _context.Set<Users>()
+                        where mom.Account == user.Account && mom.Title == name
+                        select new MomentItem {
+                            moment = mom, icon = user.Icon, nickname = user.Nickname,
+                            likeCount = (from like in _context.Set<LikeMoment>()
+                                         where like.Account == mom.Account
+                                         select like.Account).Count(),
+                            commentCount = (from comment in _context.Set<Comment>()
+                                            where comment.Account == mom.Account
+                                            select comment.Account).Count(),
+                            starCount = (from star in _context.Set<MomentStar>()
+                                         where star.Account == mom.Account
+                                         select star.Account).Count()
+                        };
             switch (orderby.ToLower())
             {
                 case "time":
-                    return query.OrderBy(q => q.Time).ToList();
+                    return query.OrderBy(q => q.moment.Time).ToList();
                 case "name":
-                    return query.OrderBy(q => q.Title).ToList();
+                    return query.OrderBy(q => q.moment.Title).ToList();
                 default:
                     return query.ToList();
             }
         }
 
         [HttpGet, Route("random")]
-        public ActionResult<IEnumerable<Moment>> GetRandomMoment()
+        public ActionResult<IEnumerable<MomentItem>> GetRandomMoment()
         {
-            var query = from moment in _context.Set<Moment>()
-                        select moment;
+            var query = from mom in _context.Set<Moment>()
+                        from user in _context.Set<Users>()
+                        where mom.Account == user.Account 
+                        select new MomentItem{moment = mom, icon = user.Icon, nickname = user.Nickname, 
+                            likeCount = (from like in _context.Set<LikeMoment>()
+                                             where like.Account == mom.Account
+                                             select like.Account).Count(), 
+                            commentCount = (from comment in _context.Set<Comment>()
+                                            where comment.Account == mom.Account
+                                            select comment.Account).Count(), 
+                            starCount = (from star in _context.Set<MomentStar>()
+                                         where star.Account == mom.Account
+                                         select star.Account).Count()
+                        };
             var result = query.OrderBy(q => Guid.NewGuid()).Take(5);
-            return query.ToList();
+            return result.ToList();
         }
 
 
