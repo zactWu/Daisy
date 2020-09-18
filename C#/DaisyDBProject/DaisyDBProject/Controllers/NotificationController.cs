@@ -23,6 +23,7 @@ namespace DaisyDBProject.Controllers
             _context = context;
         }
 
+
         [HttpGet("{account}")]
         public ActionResult<IEnumerable<Object>> GetNotification(string account)
         {
@@ -40,12 +41,12 @@ namespace DaisyDBProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Notification> PostNotification(Notification notification)
+        public IActionResult PostNotification(Notification notification)
         {
             _context.Notification.Add(notification);
             _context.SaveChanges();
 
-            return CreatedAtAction("GetNotification", new { id = notification.NotifiId }, notification);
+            return Ok();
         }
     }
 }

@@ -41,11 +41,21 @@ namespace DaisyDBProject.Controllers
                 return NotFound();
             }
 
-            var result =
+            var result1 =
                 from member in _context.Set<Member>()
-                join usergroup in _context.Set<Usergroups>()
-                on member.GroupId equals usergroup.GroupId
-                where member.Account == account
+                from usergroup in _context.Set<Usergroups>()
+                where member.GroupId == usergroup.GroupId && member.Account == account
+                select new
+                {
+                    usergroup.GroupId,
+                    usergroup.ProjectId,
+                    usergroup.LeaderAccount,
+                    usergroup.Name,
+                    usergroup.Introduction,
+                };
+            var result2 = 
+                from usergroup in _context.Set<Usergroups>()
+                where usergroup.LeaderAccount == account
                 select new
                 {
                     usergroup.GroupId,
@@ -55,32 +65,29 @@ namespace DaisyDBProject.Controllers
                     usergroup.Introduction,
                 };
                 
-            return result.ToList();
+            return result1.ToList().Union(result2.ToList()).ToList();
         }
 
         // GET: api/Usergroup?GroupId=[]&ProjectId=[]
         [HttpGet]
-        public ActionResult<Object> GetUsergroups(int groupid, int projectid)
-        {
-            var group = _context.Usergroups.Find(groupid, projectid);
+        public ActionResult<Object> GetUsergroups(int groupid, int projectId){
+            var group = _context.Usergroups.Find(groupid, projectId);
+            if(group == null) return BadRequest();
             var leaderusr = _context.Users.Find(group.LeaderAccount);
-            var result = new {
-                Curmemnum = group.Member.Count(),
-                Icon = ALiYunOss.GetImageFromPath(leaderusr.Icon),
-                sequence = (
-                from project in _context.Set<Project>()
-                join post in _context.Set<Post>()
-                on project.ProjectId equals post.ProjectId
-                where project.ProjectId == projectid
-                select new
-                {
-                    project.Name,
-                    post.MaxMemberNum,
-                    
-                }).ToList()
+            var project = _context.Project.Find(projectId);
+            var result = new{
+                group.Name, group.Introduction, 
+                memberList = 
+               (from member in _context.Set<Member>()
+                join user in _context.Set<Users>()
+                    on member.Account equals user.Account
+                where member.GroupId == groupid && member.ProjectId == projectId
+                select new{user.Account, user.Name, 
+                icon = ALiYunOss.GetImageFromPath(user.Icon)}
+                ).ToList()
             };
             return result;
-            }
+        }
 
         // PUT: api/Usergroup
         [HttpPut]

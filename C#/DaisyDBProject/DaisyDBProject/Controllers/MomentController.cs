@@ -34,9 +34,23 @@ namespace DaisyDBProject.Controllers
 
         // GET: api/Moments
         [HttpGet]
-        public ActionResult<IEnumerable<Moment>> GetMoment()
+        public ActionResult<IEnumerable<MomentItem>> GetMoment()
         {
-            return _context.Moment.ToList();
+            var query = from mom in _context.Set<Moment>()
+                        from user in _context.Set<Users>()
+                        where mom.Account == user.Account 
+                        select new MomentItem{moment = mom, icon = user.Icon, nickname = user.Nickname, 
+                            likeCount = (from like in _context.Set<LikeMoment>()
+                                             where like.Account == mom.Account
+                                             select like.Account).Count(), 
+                            commentCount = (from comment in _context.Set<Comment>()
+                                            where comment.Account == mom.Account
+                                            select comment.Account).Count(), 
+                            starCount = (from star in _context.Set<MomentStar>()
+                                         where star.Account == mom.Account
+                                         select star.Account).Count()
+                        };
+            return query.ToList();
         }
 
         [HttpGet,Route("count")]
@@ -47,16 +61,23 @@ namespace DaisyDBProject.Controllers
 
         // GET: api/Moments/5
         [HttpGet("{id}")]
-        public ActionResult<Moment> GetMoment(int id)
+        public ActionResult<Object> GetMoment(int id)
         {
             var moment = _context.Moment.Find(id);
-
-            if (moment == null)
-            {
+            if (moment == null){
                 return NotFound();
             }
 
-            return moment;
+            return new{moment,  likeCount = (from like in _context.Set<LikeMoment>()
+                                         where like.Account == moment.Account
+                                         select like.Account).Count(), 
+                                commentCount = (from comment in _context.Set<Comment>()
+                                            where comment.Account == moment.Account
+                                            select comment.Account).Count(),
+                                starCount = (from star in _context.Set<MomentStar>()
+                                         where star.Account == moment.Account
+                                         select star.Account).Count()
+            };
         }
 
         [HttpGet,Route("search")]

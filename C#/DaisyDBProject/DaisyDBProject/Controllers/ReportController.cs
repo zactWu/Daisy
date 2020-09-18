@@ -46,37 +46,26 @@ namespace DaisyDBProject.Controllers
             return query.ToList();
         }
 
-        // PUT: api/Reports/5
+        // PUT: api/Reports/5?status=
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public IActionResult PutReport(int id, Report report)
-        {
-            if (id != report.ReportId)
-            {
+        public IActionResult PutReport(int id, string status){
+            var report = _context.Report.Find(id);
+            if(report == null) {
                 return BadRequest();
             }
-            if(report.DealStatus!= "successful" && report.DealStatus != "failed")
-            {
+            if(status!= "successful" && status != "failed"){
                 return BadRequest();
             }
 
-            _context.Entry(report).State = EntityState.Modified;
+           report.DealStatus = status;
 
-            try
-            {
+            try{
                 _context.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ReportExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
+            catch (DbUpdateConcurrencyException){
                     throw;
-                }
             }
 
             return NoContent();

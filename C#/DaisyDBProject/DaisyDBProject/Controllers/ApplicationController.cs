@@ -10,6 +10,15 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace DaisyDBProject.Controllers
 {
+
+    public class ApplicationPut{
+        public int projectId { get; set;}
+        public string account { get; set;}
+        public int groupId { get; set;}
+        public string result { get; set;}
+
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -42,17 +51,15 @@ namespace DaisyDBProject.Controllers
 
         // PUT: api/Application
         [HttpPut]
-        public IActionResult PutApplication(int projectid, int groupid, string account, string result, Application application)
+        public IActionResult PutApplication(int projectid, int groupid, ApplicationPut applicationPut)
         {
-            if (result == "successful")
-            {
+            var application = _context.Application.Find(projectid, groupid, applicationPut.account);
+            if (applicationPut.result == "successful"){
                 var group = _context.Usergroups.Find(groupid, projectid);
-                var num = group.Member.Count();
-                num++;
                 Member new_member = new Member {
-                    ProjectId=projectid,
-                    GroupId=groupid,
-                    Account=account
+                    ProjectId = projectid,
+                    GroupId = groupid,
+                    Account = applicationPut.account
                 };
                 //var new_member = _context.Users.Find(account);
                 _context.Member.Add(new_member);
@@ -68,7 +75,7 @@ namespace DaisyDBProject.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ApplicationExists(projectid, groupid, account))
+                if (!ApplicationExists(projectid, groupid, applicationPut.account))
                 {
                     return NotFound();
                 }
