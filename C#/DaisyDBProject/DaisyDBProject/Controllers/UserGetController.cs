@@ -24,19 +24,19 @@ namespace DaisyDBProject.Controllers {
         public ActionResult<IEnumerable<Object>> GetUsrMoment(string account) {
             var query = from moment in _context.Set<Moment>()
                         where moment.Account == account
-                        select new { moment.MomentId, moment.Title };
+                        select new { moment.MomentId, moment.Title, moment.Content};
             return query.ToList();
         }
 
         // GET: /api/User/Coment/111111111
         [HttpGet]
-        [Route("Coment/{account}")]
-        public ActionResult<IEnumerable<Object>> GetUsrComent(string account) {
+        [Route("Discussion/{account}")]
+        public ActionResult<IEnumerable<Object>> GetUsrDiscussion(string account) {
             var query = from disc in _context.Set<Discussion>()
                         join project in _context.Set<Project>()
                             on disc.ProjectId equals project.ProjectId
                         where disc.Account == account
-                        select new { disc.ProjectId, disc.DiscussionId, project.Name }; ;
+                        select new { disc.ProjectId, disc.DiscussionId, project.Name, disc.Content}; ;
             return query.ToList();
         }
 

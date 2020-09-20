@@ -65,8 +65,32 @@ namespace DaisyDBProject.Controllers
         {
             var query = from project in _context.Set<Project>()
                         select project;
-            var result=query.OrderBy(q=>Guid.NewGuid()).Take(15);
-            return query.ToList();
+            var queryList = query.ToList();
+            var rand = new Random();
+            int len = queryList.Count;
+            List<Project> result = new List<Project>();
+            if(len <= 15){
+                result = queryList;
+            }
+            else{
+                int rd;
+                List<int> tag = new List<int>(len + 1);
+                for(int i = 0; i < len + 1; i++){
+                    tag.Add(0);
+                }
+                for(int i = 0; i < 15; ){
+                    rd = rand.Next(1, len);
+                    if(tag[rd] == 0) {
+                        tag[rd] = 1;
+                        result.Add(queryList[rd]);
+                        i++;
+                    }
+                    else{
+                        rd = rand.Next(1, len);
+                    }
+                }
+            }
+            return result;
         }
         // PUT: api/Projects/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for

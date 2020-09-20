@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace DaisyDBProject.Models
 {
@@ -21,6 +22,7 @@ namespace DaisyDBProject.Models
         public string Time { get; set; }
         public string Content { get; set; }
 
+        [JsonIgnore]
         public virtual Users AccountNavigation { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }
         public virtual ICollection<LikeMoment> LikeMoment { get; set; }

@@ -120,16 +120,16 @@ namespace DaisyDBProject.Controllers
 
         // DELETE: api/Usergroup/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Usergroups>> DeleteUsergroups(int id)
+        public ActionResult<Usergroups> DeleteUsergroups(int id, int projectId)
         {
-            var usergroups = await _context.Usergroups.FindAsync(id);
+            var usergroups = _context.Usergroups.Find(id, projectId);
             if (usergroups == null)
             {
                 return NotFound();
             }
 
             _context.Usergroups.Remove(usergroups);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             return usergroups;
         }

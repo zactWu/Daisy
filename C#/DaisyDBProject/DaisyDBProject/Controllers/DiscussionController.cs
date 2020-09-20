@@ -85,9 +85,11 @@ namespace DaisyDBProject.Controllers
         }
 
         // DELETE: api/Discussions/5
-        public ActionResult<Discussion> DeleteDiscussion(int id,int projectId)
+        [HttpDelete]
+        [Authorize]
+        public ActionResult<Discussion> DeleteDiscussion(int discussionId,int projectId)
         {
-            var discussion = _context.Discussion.Find(id, projectId);
+            var discussion = _context.Discussion.Find(discussionId, projectId);
             if (discussion == null)
             {
                 return NotFound();

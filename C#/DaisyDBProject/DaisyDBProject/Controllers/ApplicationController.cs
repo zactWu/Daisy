@@ -33,17 +33,17 @@ namespace DaisyDBProject.Controllers
 
         
 
-        // GET: /api/Application?ProjectId=[]&GroupId=[]
-        [HttpGet]
-        public ActionResult<IEnumerable<Object>> GetApplication(int ProjectId, int GroupId)
-        {
+        // GET: /api/Application/1
+        [HttpGet("{account}")]
+        public ActionResult<IEnumerable<Object>> GetApplication(string account){
             var result =
                 from application in _context.Set<Application>()
-                where application.ProjectId == ProjectId && application.GroupId == GroupId
-                select new
-                {
-                    application.Account,
-                    application.Content
+                from usergroup in _context.Set<Usergroups>()
+                from user in _context.Set<Users>()
+                where application.GroupId == usergroup.GroupId && usergroup.LeaderAccount == account
+                select new{
+                    usergroup.ProjectId, usergroup.GroupId, usergroup.Name, 
+                    application.Account, userName = user.Name, application.Content, application.Status
                 };
 
             return result.ToList();
@@ -51,8 +51,10 @@ namespace DaisyDBProject.Controllers
 
         // PUT: api/Application
         [HttpPut]
-        public IActionResult PutApplication(int projectid, int groupid, ApplicationPut applicationPut)
+        public IActionResult PutApplication(ApplicationPut applicationPut)
         {
+            int projectid = applicationPut.projectId;
+            int groupid = applicationPut.groupId;
             var application = _context.Application.Find(projectid, groupid, applicationPut.account);
             if (applicationPut.result == "successful"){
                 var group = _context.Usergroups.Find(groupid, projectid);
@@ -91,7 +93,7 @@ namespace DaisyDBProject.Controllers
         // POST: api/Application
         [HttpPost]
         [Authorize]
-        public ActionResult<Application> PostApplication(Application application)
+        public IActionResult PostApplication(Application application)
         {
             application.Status = "Unprocessed";
             _context.Application.Add(application);
@@ -111,7 +113,7 @@ namespace DaisyDBProject.Controllers
                 }
             }
 
-            return CreatedAtAction("GetApplication", new { id = application.ProjectId }, application);
+            return Ok();
         }
 
         private bool ApplicationExists(int projectid, int groupid, string account)

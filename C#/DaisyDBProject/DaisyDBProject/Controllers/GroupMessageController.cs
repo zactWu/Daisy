@@ -20,7 +20,7 @@ namespace DaisyDBProject.Controllers {
         }
 
         // GET: api/GroupMessage
-        [HttpGet]
+        [HttpGet("{account}")]
         public ActionResult<IEnumerable<Object>> GetGroupMessage(string account) {
             Users user = _context.Users.Find(account);
             var query = from userGroupMessage in _context.Set<UserGroupMessage>()

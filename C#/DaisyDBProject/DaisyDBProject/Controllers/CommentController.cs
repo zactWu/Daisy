@@ -25,10 +25,11 @@ namespace DaisyDBProject.Controllers
 
         // GET: api/Comment?MomentId=
         [HttpGet]
-        public ActionResult<IEnumerable<Object>> GetComment(string momentId){
+        public ActionResult<IEnumerable<Object>> GetCommentList(int momentId){
             var query = from comment in _context.Set<Comment>()
                         join user in _context.Set<Users>()
                             on comment.Account equals user.Account
+                        where comment.MomentId == momentId
                         select new {
                             comment.CommentId, comment.Account,
                             comment.Content, comment.Time, user.Nickname,

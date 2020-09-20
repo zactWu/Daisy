@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DaisyDBProject.Models;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Authorization;
+using DaisyDBProject.Helpers;
 
 namespace DaisyDBProject.Controllers
 {
@@ -39,7 +40,7 @@ namespace DaisyDBProject.Controllers
             var query = from mom in _context.Set<Moment>()
                         from user in _context.Set<Users>()
                         where mom.Account == user.Account 
-                        select new MomentItem{moment = mom, icon = user.Icon, nickname = user.Nickname, 
+                        select new MomentItem{moment = mom, icon = ALiYunOss.GetImageFromPath(user.Icon), nickname = user.Nickname, 
                             likeCount = (from like in _context.Set<LikeMoment>()
                                              where like.Account == mom.Account
                                              select like.Account).Count(), 
@@ -67,8 +68,10 @@ namespace DaisyDBProject.Controllers
             if (moment == null){
                 return NotFound();
             }
+            var user = _context.Users.Find(moment.Account);
 
-            return new{moment,  likeCount = (from like in _context.Set<LikeMoment>()
+            return new{moment,  icon = ALiYunOss.GetImageFromPath(user.Icon),
+                                likeCount = (from like in _context.Set<LikeMoment>()
                                          where like.Account == moment.Account
                                          select like.Account).Count(), 
                                 commentCount = (from comment in _context.Set<Comment>()
@@ -126,8 +129,32 @@ namespace DaisyDBProject.Controllers
                                          where star.Account == mom.Account
                                          select star.Account).Count()
                         };
-            var result = query.OrderBy(q => Guid.NewGuid()).Take(5);
-            return result.ToList();
+            var queryList = query.ToList();
+            var rand = new Random();
+            int len = queryList.Count;
+            int rd;
+            List<MomentItem> result = new List<MomentItem>();
+            if(len <= 5){
+                result = queryList;
+            }
+            else{
+                List<int> tag = new List<int>(len + 1);
+                for(int i = 0; i < len + 1; i++){
+                    tag.Add(0);
+                }
+                for(int i = 0; i < 5; ){
+                    rd = rand.Next(1, len);
+                    if(tag[rd] == 0) {
+                        tag[rd] = 1;
+                        result.Add(queryList[rd]);
+                        i++;
+                    }
+                    else{
+                        rd = rand.Next(1, len);
+                    }
+                }
+            }
+            return result;
         }
 
 

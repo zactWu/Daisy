@@ -60,7 +60,7 @@ namespace DaisyDBProject.Controllers {
         [HttpGet]
         public ActionResult<IEnumerable<Object>> GetUsers(string name) {
             var query = from user in _context.Set<Users>()
-                        where user.Name == name
+                        where user.Nickname == name
                         select new {
                             icon = ALiYunOss.GetImageFromPath(user.Icon),
                             user.Account, user.Nickname

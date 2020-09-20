@@ -40,6 +40,7 @@ namespace DaisyDBProject.Controllers {
                         from gp in groupPost
                         join user in _context.Set<Users>()
                             on gp.LeaderAccount equals user.Account
+                        where post.ProjectId == projectId
                         select new {
                             post.PostId, post.GroupId, post.PostTime,
                             gp.LeaderAccount, user.Nickname, icon = ALiYunOss.GetImageFromPath(user.Icon)
@@ -55,9 +56,11 @@ namespace DaisyDBProject.Controllers {
 
             var usergroup = _context.Usergroups.Find(groupId, projectId);
 
+            if(usergroup == null) 
+                return NotFound();
             var user = _context.Users.Find(usergroup.LeaderAccount);
 
-            if (post == null || usergroup == null || user == null) {
+            if (post == null  || user == null) {
                 return NotFound();
             }
 
@@ -82,6 +85,26 @@ namespace DaisyDBProject.Controllers {
             _context.SaveChanges();
 
             return CreatedAtAction("GetPost", new { id = post.PostId }, post);
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult<Post> DeleteUsergroups(int id)
+        {
+            var query =  from p in _context.Set<Post>()
+                        where p.GroupId == id
+                        select p;
+                        
+            //var post = _context.Post.Find(id, projectId, groupId);
+            var post = query.ToList();
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            _context.Post.Remove(post[0]);
+            _context.SaveChanges();
+
+            return post[0];
         }
 
 

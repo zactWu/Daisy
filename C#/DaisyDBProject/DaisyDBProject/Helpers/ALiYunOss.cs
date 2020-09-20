@@ -8,7 +8,7 @@ using Aliyun.OSS.Common;
 namespace DaisyDBProject.Helpers {
     static class ALiYunOss {
 
-        static private readonly string endpoint = "oss-cn-shanghai.aliyuncs.com";
+        static private readonly string endpoint = "oss-accelerate.aliyuncs.com";
         static private readonly string accessKeyId = "LTAI4G6nTuGNFnHykXVr5ujD";
         static private readonly string accessKeySecret = "7elvGGv3ZbhJ1wFJIHbG6SavmuVd8E";
         static private readonly string bucketName = "daisydata";
