@@ -41,6 +41,7 @@ namespace DaisyDBProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut]
+        [Authorize]
         public IActionResult PutDiscussion(Discussion discussion)
         {
             _context.Entry(discussion).State = EntityState.Modified;
@@ -68,6 +69,7 @@ namespace DaisyDBProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize]
         public ActionResult<Discussion> PostDiscussion(Discussion discussion)
         {
             _context.Discussion.Add(discussion);
@@ -84,9 +86,11 @@ namespace DaisyDBProject.Controllers
         }
 
         // DELETE: api/Discussions/5
-        public ActionResult<Discussion> DeleteDiscussion(int id,int projectId)
+        [HttpDelete]
+        [Authorize]
+        public ActionResult<Discussion> DeleteDiscussion(int discussionId,int projectId)
         {
-            var discussion = _context.Discussion.Find(id, projectId);
+            var discussion = _context.Discussion.Find(discussionId, projectId);
             if (discussion == null)
             {
                 return NotFound();

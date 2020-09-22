@@ -8,9 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using DaisyDBProject.Models;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Authorization;
+using DaisyDBProject.Helpers;
 
 namespace DaisyDBProject.Controllers
 {
+    public class MomentItem{
+        public Moment moment{get; set;}
+        public string icon{get; set;}
+        public string nickname{get; set;}
+        public int likeCount{get; set;}
+        public int commentCount{get; set;}
+        public int starCount{get; set;}
+    }
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class MomentController : ControllerBase
@@ -24,9 +35,23 @@ namespace DaisyDBProject.Controllers
 
         // GET: api/Moments
         [HttpGet]
-        public ActionResult<IEnumerable<Moment>> GetMoment()
+        public ActionResult<IEnumerable<MomentItem>> GetMoment()
         {
-            return _context.Moment.ToList();
+            var query = from mom in _context.Set<Moment>()
+                        from user in _context.Set<Users>()
+                        where mom.Account == user.Account 
+                        select new MomentItem{moment = mom, icon = ALiYunOss.GetImageFromPath(user.Icon), nickname = user.Nickname, 
+                            likeCount = (from like in _context.Set<LikeMoment>()
+                                             where like.Account == mom.Account
+                                             select like.Account).Count(), 
+                            commentCount = (from comment in _context.Set<Comment>()
+                                            where comment.Account == mom.Account
+                                            select comment.Account).Count(), 
+                            starCount = (from star in _context.Set<MomentStar>()
+                                         where star.Account == mom.Account
+                                         select star.Account).Count()
+                        };
+            return query.ToList();
         }
 
         [HttpGet,Route("count")]
@@ -37,42 +62,99 @@ namespace DaisyDBProject.Controllers
 
         // GET: api/Moments/5
         [HttpGet("{id}")]
-        public ActionResult<Moment> GetMoment(int id)
+        public ActionResult<Object> GetMoment(int id)
         {
             var moment = _context.Moment.Find(id);
-
-            if (moment == null)
-            {
+            if (moment == null){
                 return NotFound();
             }
+            var user = _context.Users.Find(moment.Account);
 
-            return moment;
+            return new{moment,  icon = ALiYunOss.GetImageFromPath(user.Icon),
+                                likeCount = (from like in _context.Set<LikeMoment>()
+                                         where like.Account == moment.Account
+                                         select like.Account).Count(), 
+                                commentCount = (from comment in _context.Set<Comment>()
+                                            where comment.Account == moment.Account
+                                            select comment.Account).Count(),
+                                starCount = (from star in _context.Set<MomentStar>()
+                                         where star.Account == moment.Account
+                                         select star.Account).Count()
+            };
         }
 
         [HttpGet,Route("search")]
-        public ActionResult<IEnumerable<Moment>> SearchMoment(string name, string orderby)
+        public ActionResult<IEnumerable<MomentItem>> SearchMoment(string name, string orderby)
         {
-            var query = from moment in _context.Set<Moment>()
-                        where moment.Title == name
-                        select moment;
+            var query = from mom in _context.Set<Moment>()
+                        from user in _context.Set<Users>()
+                        where mom.Account == user.Account && mom.Title == name
+                        select new MomentItem {
+                            moment = mom, icon = user.Icon, nickname = user.Nickname,
+                            likeCount = (from like in _context.Set<LikeMoment>()
+                                         where like.Account == mom.Account
+                                         select like.Account).Count(),
+                            commentCount = (from comment in _context.Set<Comment>()
+                                            where comment.Account == mom.Account
+                                            select comment.Account).Count(),
+                            starCount = (from star in _context.Set<MomentStar>()
+                                         where star.Account == mom.Account
+                                         select star.Account).Count()
+                        };
             switch (orderby.ToLower())
             {
                 case "time":
-                    return query.OrderBy(q => q.Time).ToList();
+                    return query.OrderBy(q => q.moment.Time).ToList();
                 case "name":
-                    return query.OrderBy(q => q.Title).ToList();
+                    return query.OrderBy(q => q.moment.Title).ToList();
                 default:
                     return query.ToList();
             }
         }
 
         [HttpGet, Route("random")]
-        public ActionResult<IEnumerable<Moment>> GetRandomMoment()
+        public ActionResult<IEnumerable<MomentItem>> GetRandomMoment()
         {
-            var query = from moment in _context.Set<Moment>()
-                        select moment;
-            var result = query.OrderBy(q => Guid.NewGuid()).Take(5);
-            return query.ToList();
+            var query = from mom in _context.Set<Moment>()
+                        from user in _context.Set<Users>()
+                        where mom.Account == user.Account 
+                        select new MomentItem{moment = mom, icon = user.Icon, nickname = user.Nickname, 
+                            likeCount = (from like in _context.Set<LikeMoment>()
+                                             where like.Account == mom.Account
+                                             select like.Account).Count(), 
+                            commentCount = (from comment in _context.Set<Comment>()
+                                            where comment.Account == mom.Account
+                                            select comment.Account).Count(), 
+                            starCount = (from star in _context.Set<MomentStar>()
+                                         where star.Account == mom.Account
+                                         select star.Account).Count()
+                        };
+            var queryList = query.ToList();
+            var rand = new Random();
+            int len = queryList.Count;
+            int rd;
+            List<MomentItem> result = new List<MomentItem>();
+            if(len <= 5){
+                result = queryList;
+            }
+            else{
+                List<int> tag = new List<int>(len + 1);
+                for(int i = 0; i < len + 1; i++){
+                    tag.Add(0);
+                }
+                for(int i = 0; i < 5; ){
+                    rd = rand.Next(1, len);
+                    if(tag[rd] == 0) {
+                        tag[rd] = 1;
+                        result.Add(queryList[rd]);
+                        i++;
+                    }
+                    else{
+                        rd = rand.Next(1, len);
+                    }
+                }
+            }
+            return result;
         }
 
 

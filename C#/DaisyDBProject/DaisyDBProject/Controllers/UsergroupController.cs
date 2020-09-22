@@ -41,11 +41,21 @@ namespace DaisyDBProject.Controllers
                 return NotFound();
             }
 
-            var result =
+            var result1 =
                 from member in _context.Set<Member>()
-                join usergroup in _context.Set<Usergroups>()
-                on member.GroupId equals usergroup.GroupId
-                where member.Account == account
+                from usergroup in _context.Set<Usergroups>()
+                where member.GroupId == usergroup.GroupId && member.Account == account
+                select new
+                {
+                    usergroup.GroupId,
+                    usergroup.ProjectId,
+                    usergroup.LeaderAccount,
+                    usergroup.Name,
+                    usergroup.Introduction,
+                };
+            var result2 = 
+                from usergroup in _context.Set<Usergroups>()
+                where usergroup.LeaderAccount == account
                 select new
                 {
                     usergroup.GroupId,
@@ -55,14 +65,14 @@ namespace DaisyDBProject.Controllers
                     usergroup.Introduction,
                 };
                 
-            return result.ToList();
+            return result1.ToList().Union(result2.ToList()).ToList();
         }
 
         // GET: api/Usergroup?GroupId=[]&ProjectId=[]
         [HttpGet]
-        public ActionResult<Object> GetUsergroups(int groupid, int projectid)
-        {
-            var group = _context.Usergroups.Find(groupid, projectid);
+        public ActionResult<Object> GetUsergroups(int groupid, int projectId){
+            var group = _context.Usergroups.Find(groupid, projectId);
+            if(group == null) return BadRequest();
             var leaderusr = _context.Users.Find(group.LeaderAccount);
             var result = new {
                 Curmemnum = group.Member.Count(),
@@ -80,7 +90,7 @@ namespace DaisyDBProject.Controllers
                 }).ToList()
             };
             return result;
-            }
+        }
 
         // PUT: api/Usergroup
         [HttpPut]
@@ -113,16 +123,16 @@ namespace DaisyDBProject.Controllers
 
         // DELETE: api/Usergroup/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Usergroups>> DeleteUsergroups(int id)
+        public ActionResult<Usergroups> DeleteUsergroups(int id, int projectId)
         {
-            var usergroups = await _context.Usergroups.FindAsync(id);
+            var usergroups = _context.Usergroups.Find(id, projectId);
             if (usergroups == null)
             {
                 return NotFound();
             }
 
             _context.Usergroups.Remove(usergroups);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             return usergroups;
         }

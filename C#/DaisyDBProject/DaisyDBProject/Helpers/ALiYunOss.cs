@@ -3,10 +3,10 @@ using System;
 using System.IO;
 using System.Text;
 using Aliyun.OSS;
+using Aliyun.OSS.Common;
 
 namespace DaisyDBProject.Helpers {
     static class ALiYunOss {
-
         static private readonly string endpoint = "oss-cn-shanghai.aliyuncs.com";
 
         static private readonly string accessKeyId = "LTAI4G6nTuGNFnHykXVr5ujD";
