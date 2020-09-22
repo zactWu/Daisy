@@ -14,6 +14,7 @@ namespace DaisyDBProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DiscussionController : ControllerBase
     {
         private readonly DaisyContext _context;

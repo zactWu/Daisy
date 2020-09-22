@@ -74,17 +74,20 @@ namespace DaisyDBProject.Controllers
             var group = _context.Usergroups.Find(groupid, projectId);
             if(group == null) return BadRequest();
             var leaderusr = _context.Users.Find(group.LeaderAccount);
-            var project = _context.Project.Find(projectId);
-            var result = new{
-                group.Name, group.Introduction, 
-                memberList = 
-               (from member in _context.Set<Member>()
-                join user in _context.Set<Users>()
-                    on member.Account equals user.Account
-                where member.GroupId == groupid && member.ProjectId == projectId
-                select new{user.Account, user.Name, 
-                icon = ALiYunOss.GetImageFromPath(user.Icon)}
-                ).ToList()
+            var result = new {
+                Curmemnum = group.Member.Count(),
+                Icon = ALiYunOss.GetImageFromPath(leaderusr.Icon),
+                sequence = (
+                from project in _context.Set<Project>()
+                join post in _context.Set<Post>()
+                on project.ProjectId equals post.ProjectId
+                where project.ProjectId == projectid
+                select new
+                {
+                    project.Name,
+                    post.MaxMemberNum,
+                    
+                }).ToList()
             };
             return result;
         }

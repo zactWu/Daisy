@@ -93,7 +93,9 @@ namespace DaisyDBProject.Controllers
         // POST: api/Application
         [HttpPost]
         [Authorize]
-        public IActionResult PostApplication(Application application)
+
+        public ActionResult<Application> PostApplication(Application application)
+
         {
             application.Status = "Unprocessed";
             _context.Application.Add(application);

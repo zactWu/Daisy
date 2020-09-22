@@ -54,7 +54,7 @@ namespace DaisyDBProject.Controllers
 
         // POST: api/FavouritePackage
         [HttpPost]
-        public IActionResult PostFavouritePackage(FavouritePackage favouritePackage){
+        public ActionResult<FavouritePackage> PostFavouritePackage(FavouritePackage favouritePackage){
             if (favouritePackage.Type != "moment" && favouritePackage.Type != "post")
                 return BadRequest();
 
@@ -74,7 +74,8 @@ namespace DaisyDBProject.Controllers
                 }
             }
 
-            return Ok(favouritePackage.Name);
+            return CreatedAtAction("GetFavouritePackage", new { id = favouritePackage.Account }, favouritePackage);
+
         }
 
 
